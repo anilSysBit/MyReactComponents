@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Transition } from 'react-transition-group';
+import { KeyboardDoubleArrowLeft,KeyboardDoubleArrowRight, Scale } from '@mui/icons-material';
 const ThumbnailAccordin = () => {
 
 
   const data = {
     properties: [
-      { id: 0, value: 'https://picsum.photos/200' },
+      { id: 0, value: 'https://th.bing.com/th/id/R.4dc924a9df391d69793d059e986d1d09?rik=JQ8cDeryGq1OHA&pid=ImgRaw&r=0' },
       { id: 1, value: 'https://picsum.photos/201' },
       { id: 2, value: 'https://picsum.photos/202' },
       { id: 3, value: 'https://picsum.photos/203' },
@@ -33,6 +34,11 @@ const ThumbnailAccordin = () => {
   const [properties,setProperties] = useState(data.properties)
   const [property,setProperty] = useState(data.properties[0])
   const [value,setValue] = useState(0);
+  const [mousePosition, setMousePosition] = useState({ x: null, y: null });
+  const [cursor,setCursor] = useState(false);
+  const [showZoomedImage,setShowZoomedImage] = useState(false);
+  const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
+
   const containerRef = useRef();
 
   const onThumbnailClick = (index) => {
@@ -74,8 +80,31 @@ const ThumbnailAccordin = () => {
     }
   };
 
-  // console.log(translateVal)
+  const handleMouseMove = (event) => {
+    setCursor(true);
+    setShowZoomedImage(true);
 
+    // Get mouse coordinates from the event object
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    // Update the state with mouse position
+    setMousePosition({ x: mouseX, y: mouseY });
+
+    const elem = event.currentTarget;
+    const { width, height } = elem.getBoundingClientRect();
+    setSize([width, height]);
+    setShowMagnifier(true);
+  };
+  
+  const handleMouseOut =()=>{
+    setShowZoomedImage(false);
+    setCursor(false);
+  }
+
+ const magnifierHeight = 200
+ const  magnifieWidth = 200
+const zoomLevel = 2
 
   return (
     <div className="thumbnail_accordin" ref={thumb}>
@@ -91,12 +120,41 @@ const ThumbnailAccordin = () => {
             to{opacity: 1;}
           }
       `}</style>
-      <div className={` main_image_preview`}>
+      <div className={` main_image_preview`} onMouseMove={handleMouseMove} onMouseOut={handleMouseOut}>
+        {cursor && <span className='mouse_elem' style={{
+          position:'absolute',
+          left:mousePosition.x-120,
+          top:mousePosition.y-120,
+        }}></span>}
+
+        <div className="zoomed_image"
+           style={{
+            display: showZoomedImage ? "" : "none",
+            position: "absolute",
+            pointerEvents: "none",
+            opacity: "1", // reduce opacity so you can verify position
+            border: "1px solid lightgray",
+            backgroundColor: "white",
+            backgroundImage: `url('${imageval.value}')`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize:'cover',
+  
+            //calculate zoomed image size
+            backgroundSize: `${imgWidth * zoomLevel}px ${
+              imgHeight * zoomLevel
+            }px`,
+  
+            //calculate position of zoomed image.
+            backgroundPositionX: `${-mousePosition.x-40 * zoomLevel + magnifieWidth}px`,
+            backgroundPositionY: `${-mousePosition.y-40 * zoomLevel + magnifierHeight }px`
+          }}
+        >
+        </div>
         <img src={imageval.value} alt="photo" className={`active_ani_${imageval.id}`}/>
       </div>
       <div className="thumbnail_image">
-        <button className="prev" onClick={handleScrollPrev}>Prev</button>
-        <button className="next" onClick={handleScrollNext}>Next</button>
+        <button className="prev" onClick={handleScrollPrev}><KeyboardDoubleArrowLeft/></button>
+        <button className="next" onClick={handleScrollNext}><KeyboardDoubleArrowRight/></button>
         <div className="img_container" ref={containerRef}>
         {data.properties.map((elem, index) => {
           return (

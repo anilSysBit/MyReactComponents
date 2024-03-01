@@ -5,7 +5,7 @@
 }
 
 .thumbnail_accordin{
-  border: 2px solid black;
+  // border: 2px solid black;
   padding: 20px;
   max-width: 400px;
   margin-left: 100px;
@@ -14,11 +14,30 @@
   margin-top: 100px;
   display: flex;
   place-content: center;
-  // border: 2px solid black;
+  border: 2px solid black;
+  cursor: zoom-in;
   max-height: 400px;
-  // width: 200px;
-  height: 400px;
-  // transition: .5s ease;
+  position: relative;
+
+  .mouse_elem{
+    border: 1px solid black;
+    // position: absolute;
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    opacity: .5;
+  }
+
+  .zoomed_image{
+    position: absolute;
+    height:400px;
+    width: 400px;
+    border: 2px solid black;
+    right: -450px;
+    border: 2px solid black;
+
+  }
+
   img{
     height: 100%;
     width: 100%;
@@ -37,6 +56,12 @@
     height: 30px;
     width: 30px;
     transform: translateY(40px);
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid gray;
+    cursor: pointer;
+    opacity: .8;
   }
   .prev{
     // float: left;
