@@ -14,13 +14,15 @@
   margin-top: 100px;
   display: flex;
   place-content: center;
-  border: 2px solid black;
+  border-radius: 8px;
   cursor: zoom-in;
-  max-height: 400px;
+  min-height: 350px;
+  height: 300px;
   position: relative;
+  box-shadow: 1px 1px 10px gray;
 }
 .main_image_preview .mouse_elem {
-  border: 1px solid black;
+  border: 0.5px dotted gray;
   background-color: white;
   width: 100px;
   height: 100px;
@@ -30,9 +32,8 @@
   position: absolute;
   height: 400px;
   width: 400px;
-  border: 2px solid black;
   right: -450px;
-  border: 2px solid black;
+  border-radius: 8px;
 }
 .main_image_preview img {
   height: 100%;
@@ -51,11 +52,12 @@
   width: 30px;
   transform: translateY(40px);
   border: none;
-  background-color: white;
+  background-color: #07631c;
   border-radius: 5px;
   border: 1px solid gray;
   cursor: pointer;
-  opacity: 0.8;
+  color: white;
+  border: none;
 }
 .thumbnail_image .prev {
   left: -10px;
@@ -67,7 +69,8 @@
 .img_container {
   margin-top: 10px;
   height: 100px;
-  border: 2px solid black;
+  box-shadow: 1px 1px 10px gray;
+  border-radius: 8px;
   display: flex;
   overflow-x: scroll;
   place-items: center;

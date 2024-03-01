@@ -14,14 +14,17 @@
   margin-top: 100px;
   display: flex;
   place-content: center;
-  border: 2px solid black;
+  border-radius: 8px;
+  // border: 2px solid black;
   cursor: zoom-in;
-  max-height: 400px;
+  // max-height: 400px;
+  min-height: 350px;
+  height: 300px;
   position: relative;
+  box-shadow: 1px 1px 10px gray;
 
   .mouse_elem{
-    border: 1px solid black;
-    // position: absolute;
+    border: .5px dotted gray;
     background-color: white;
     width: 100px;
     height: 100px;
@@ -32,10 +35,8 @@
     position: absolute;
     height:400px;
     width: 400px;
-    border: 2px solid black;
     right: -450px;
-    border: 2px solid black;
-
+    border-radius: 8px;
   }
 
   img{
@@ -57,11 +58,12 @@
     width: 30px;
     transform: translateY(40px);
     border: none;
-    background-color: white;
+    background-color: #07631c;
     border-radius: 5px;
     border: 1px solid gray;
     cursor: pointer;
-    opacity: .8;
+    color: white;
+    border: none;
   }
   .prev{
     // float: left;
@@ -76,7 +78,9 @@
 .img_container{
   margin-top: 10px;
   height: 100px;
-  border: 2px solid black;
+  // border: 2px solid black;
+  box-shadow: 1px 1px 10px gray;
+  border-radius: 8px;
   display: flex;
   // place-content: center;
   // overflow: hidden;

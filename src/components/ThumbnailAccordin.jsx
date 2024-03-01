@@ -102,9 +102,30 @@ const ThumbnailAccordin = () => {
     setCursor(false);
   }
 
- const magnifierHeight = 200
- const  magnifieWidth = 200
-const zoomLevel = 2
+  const magnifierHeight = 200
+  const  magnifieWidth = 200
+ const zoomLevel = 2
+  const MagnifierStyle = {
+    display: showZoomedImage ? "" : "none",
+    position: "absolute",
+    pointerEvents: "none",
+    opacity: "1", // reduce opacity so you can verify position
+    border: "1px solid lightgray",
+    backgroundColor: "white",
+    backgroundImage: `url('${imageval.value}')`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize:'cover',
+
+    //calculate zoomed image size
+    backgroundSize: `${imgWidth * zoomLevel}px ${
+      imgHeight * zoomLevel
+    }px`,
+
+    //calculate position of zoomed image.
+    backgroundPositionX: `${-mousePosition.x-40 * zoomLevel + magnifieWidth}px`,
+    backgroundPositionY: `${-mousePosition.y-40 * zoomLevel + magnifierHeight }px`
+  }
+
 
   return (
     <div className="thumbnail_accordin" ref={thumb}>
@@ -123,31 +144,12 @@ const zoomLevel = 2
       <div className={` main_image_preview`} onMouseMove={handleMouseMove} onMouseOut={handleMouseOut}>
         {cursor && <span className='mouse_elem' style={{
           position:'absolute',
-          left:mousePosition.x-120,
-          top:mousePosition.y-120,
+          left:mousePosition.x-130,
+          top:mousePosition.y-130,
         }}></span>}
 
         <div className="zoomed_image"
-           style={{
-            display: showZoomedImage ? "" : "none",
-            position: "absolute",
-            pointerEvents: "none",
-            opacity: "1", // reduce opacity so you can verify position
-            border: "1px solid lightgray",
-            backgroundColor: "white",
-            backgroundImage: `url('${imageval.value}')`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize:'cover',
-  
-            //calculate zoomed image size
-            backgroundSize: `${imgWidth * zoomLevel}px ${
-              imgHeight * zoomLevel
-            }px`,
-  
-            //calculate position of zoomed image.
-            backgroundPositionX: `${-mousePosition.x-40 * zoomLevel + magnifieWidth}px`,
-            backgroundPositionY: `${-mousePosition.y-40 * zoomLevel + magnifierHeight }px`
-          }}
+           style={MagnifierStyle}
         >
         </div>
         <img src={imageval.value} alt="photo" className={`active_ani_${imageval.id}`}/>
