@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Transition } from 'react-transition-group';
 const ThumbnailAccordin = () => {
+
+
   const data = {
     properties: [
       { id: 0, value: 'https://picsum.photos/200' },
@@ -31,6 +33,7 @@ const ThumbnailAccordin = () => {
   const [properties,setProperties] = useState(data.properties)
   const [property,setProperty] = useState(data.properties[0])
   const [value,setValue] = useState(0);
+  const containerRef = useRef();
 
   const onThumbnailClick = (index) => {
     setImageval(data.properties[index]);
@@ -50,9 +53,29 @@ const ThumbnailAccordin = () => {
     setProperty(data.properties[newIndex])
   };
 
-// console.log(property)
+
+  // Scroll to the next position
+  const handleScrollNext = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft + 100, // Adjust the value as needed
+        behavior: "smooth" // Smooth scrolling animation
+      });
+    }
+  };
+
+  // Scroll to the previous position
+  const handleScrollPrev = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        left: containerRef.current.scrollLeft - 100, // Adjust the value as needed
+        behavior: "smooth" // Smooth scrolling animation
+      });
+    }
+  };
 
   // console.log(translateVal)
+
 
   return (
     <div className="thumbnail_accordin" ref={thumb}>
@@ -72,16 +95,12 @@ const ThumbnailAccordin = () => {
         <img src={imageval.value} alt="photo" className={`active_ani_${imageval.id}`}/>
       </div>
       <div className="thumbnail_image">
-        <button className="prev" onClick={handlePrev} disabled={property.id === 0} >Prev</button>
-        <button className="next" onClick={handleNext} disabled={property.id === data.properties.length-1}>Next</button>
-        <div className="img_container">
+        <button className="prev" onClick={handleScrollPrev}>Prev</button>
+        <button className="next" onClick={handleScrollNext}>Next</button>
+        <div className="img_container" ref={containerRef}>
         {data.properties.map((elem, index) => {
-          let transform = property.id*(900/(properties.length));
           return (
             <img
-              style={{
-                transform:`translateX(-${transform}%)`,
-              }}
               src={elem.value}
               alt="thumbnail"
               key={index}
