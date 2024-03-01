@@ -98,10 +98,10 @@
 }
 
 /* Optional: You can style the thumb and track if needed */
-.container::-webkit-scrollbar-thumb {
+.img_container::-webkit-scrollbar-thumb {
   width: 0; /* Remove scrollbar thumb width */
 }
 
-.container::-webkit-scrollbar-track {
+.img_container::-webkit-scrollbar-track {
   background: transparent; /* Optional: Remove scrollbar track */
 }/*# sourceMappingURL=index.css.map */

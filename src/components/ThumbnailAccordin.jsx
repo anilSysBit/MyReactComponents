@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Transition } from 'react-transition-group';
 import { KeyboardDoubleArrowLeft,KeyboardDoubleArrowRight, Scale } from '@mui/icons-material';
 const ThumbnailAccordin = () => {
 
@@ -18,22 +17,9 @@ const ThumbnailAccordin = () => {
     ]
   }
 
-  const images = [
-    { id: 0, value: 'https://picsum.photos/200' },
-    { id: 1, value: 'https://picsum.photos/201' },
-    { id: 2, value: 'https://picsum.photos/202' },
-    { id: 3, value: 'https://picsum.photos/203' },
-    { id: 4, value: 'https://picsum.photos/204' },
-    { id: 5, value: 'https://picsum.photos/205' },
-    { id: 6, value: 'https://picsum.photos/206' },
-    { id: 6, value: 'https://picsum.photos/207' },
-  ]
-
   const thumb = useRef(null);
   const [imageval, setImageval] = useState(data.properties[0]);
-  const [properties,setProperties] = useState(data.properties)
   const [property,setProperty] = useState(data.properties[0])
-  const [value,setValue] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: null, y: null });
   const [cursor,setCursor] = useState(false);
   const [showZoomedImage,setShowZoomedImage] = useState(false);
@@ -48,16 +34,6 @@ const ThumbnailAccordin = () => {
   const handleMouseOver =(index)=>{
     setImageval(images[index])
   }
-
-
-  const handleNext = () => {
-    const newIndex = property.id +1
-    setProperty(data.properties[newIndex])
-  };
-  const handlePrev = () => {
-    const newIndex = property.id -1
-    setProperty(data.properties[newIndex])
-  };
 
 
   // Scroll to the next position
