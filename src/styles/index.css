@@ -106,54 +106,85 @@
   background: transparent; /* Optional: Remove scrollbar track */
 }
 
-.pop_image_gallery {
+.fix_wrapper {
   height: 100vh;
-  width: 100%;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
-  place-content: center;
-  place-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  overflow: auto;
-  flex-direction: column;
-  row-gap: 10px;
 }
-.pop_image_gallery p {
-  font-size: 20px;
-  color: white;
-}
-.pop_image_gallery .pop_image_gallery_sm {
-  position: relative;
-  border: 2px solid white;
-  min-height: 400px;
-  min-width: 300px;
-  display: flex;
-  place-content: center;
-  place-items: center;
-}
-.pop_image_gallery .pop_image_gallery_sm .arrow {
-  color: white;
-  z-index: 6;
-  cursor: pointer;
+.fix_wrapper .cancel_wrapper {
   position: absolute;
-  height: 100%;
-  place-items: center;
+  right: 35%;
+  top: 15%;
+  color: white;
+  cursor: pointer;
 }
-.pop_image_gallery .pop_image_gallery_sm .arrow1 {
-  left: -10px;
+.fix_wrapper .pop_gallery_box {
+  padding: 5px;
+  box-shadow: 1px 1px 10px gray;
+  max-height: 500px;
+  max-width: 350px;
+  border-radius: 8px;
+  height: 500px;
+  margin: auto;
+  /* Optional: You can style the thumb and track if needed */
 }
-.pop_image_gallery .pop_image_gallery_sm .arrow2 {
-  right: -10px;
-}
-.pop_image_gallery .pop_image_gallery_sm .img_box {
-  max-width: 300px;
-  height: 100%;
-  transition: 1s ease-in;
-}
-.pop_image_gallery .pop_image_gallery_sm .img_box img {
+.fix_wrapper .pop_gallery_box .pop_gallery_sm {
   height: 100%;
   width: 100%;
-  cursor: zoom-in;
+  background-color: white;
+  position: relative;
+  display: flex;
+  place-items: center;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm button {
+  position: absolute;
+  z-index: 10;
+  height: 30px;
+  width: 30px;
+  border: none;
+  background-color: #07631c;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm .prev {
+  left: -30px;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm .next {
+  right: -30px;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm .img_box {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  position: relative;
+  width: 100%;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm .img_box .imge {
+  height: 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  background-color: rgb(3, 110, 3);
+  width: 100%;
+}
+.fix_wrapper .pop_gallery_box .pop_gallery_sm .img_box .imge img {
+  width: 100%;
+  margin: auto;
+  -o-object-position: center;
+     object-position: center;
+}
+.fix_wrapper .pop_gallery_box .img_box::-webkit-scrollbar {
+  display: none;
+}
+.fix_wrapper .pop_gallery_box .img_box::-webkit-scrollbar-thumb {
+  width: 0; /* Remove scrollbar thumb width */
+}
+.fix_wrapper .pop_gallery_box .imb_box::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Remove scrollbar track */
 }/*# sourceMappingURL=index.css.map */
