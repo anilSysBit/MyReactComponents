@@ -6,6 +6,7 @@ import viteLogo from '/vite.svg'
 import "./styles/index.css"
 import SliderBox from './components/ThumbnailAccordin'
 import ThumbnailAccordin from './components/ThumbnailAccordin'
+import PopImageGallery from './components/PopopImageGallery'
 
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
   return (
     <>
       {/* <KrishnaAccordin/> */}
-      <ThumbnailAccordin />
+      {/* <ThumbnailAccordin /> */}
+      <PopImageGallery/>
     </>
   )
 }
