@@ -187,4 +187,325 @@
 }
 .fix_wrapper .pop_gallery_box .imb_box::-webkit-scrollbar-track {
   background: transparent; /* Optional: Remove scrollbar track */
+}
+
+body {
+  display: flex;
+}
+
+.jeb_message_box {
+  height: 620px;
+  width: 750px;
+  margin: auto;
+  margin-left: 100px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 1px 1px 10px var(--light-gray);
+  right: 30px;
+  bottom: 70px;
+  transform: 2s ease-in-out;
+  z-index: 20;
+  border: 2px solid black;
+  animation: messageBox 0.3s ease-in-out 1;
+}
+.jeb_message_box .message_box_sm {
+  display: flex;
+  height: 100%;
+}
+.jeb_message_box .message_box_sm .left {
+  border-right: 0.5px solid gray;
+  width: 30%;
+  height: 100%;
+  overflow-y: auto;
+}
+.jeb_message_box .message_box_sm .left .message_logo {
+  color: var(--gb-orange-color);
+  text-align: center;
+  border-bottom: 0.5px solid gray;
+  padding: 20px;
+  height: 15%;
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .avatar_name_box {
+  place-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid rgb(214, 214, 214);
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .avatar_name_box .user_message_info {
+  display: flex;
+  place-items: center;
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .avatar_name_box .message_preview {
+  text-align: right;
+  font-size: 13px;
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .avatar_name_box:hover {
+  background-color: var(--gray-white);
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .avatar_name_box p {
+  margin-left: 10px;
+}
+.jeb_message_box .message_box_sm .left .my_messages_stack .active {
+  background-color: var(--gray-white);
+}
+.jeb_message_box .message_box_sm .right {
+  width: 70%;
+  height: 100%;
+}
+.jeb_message_box .message_box_sm .right .cross_spacing {
+  width: 100%;
+  border-bottom: 0.5px solid gray;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  text-align: right;
+  height: 15%;
+}
+.jeb_message_box .message_box_sm .right .cross_spacing button {
+  display: none;
+}
+.jeb_message_box .message_box_sm .right .cross_spacing p {
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  place-items: center;
+  -moz-column-gap: 10px;
+       column-gap: 10px;
+}
+.jeb_message_box .message_box_sm .right .main_message_container {
+  height: 85%;
+}
+.jeb_message_box .message_box_sm .user_not_logged {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  place-content: center;
+  row-gap: 20px;
+  height: 100%;
+  width: 100%;
+}
+.jeb_message_box .message_box_sm .user_not_logged .exclusive_app {
+  color: red;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.jeb_message_box .message_box_sm .user_not_logged .exclusive_app:hover {
+  color: var(--gb-green-color);
+}
+.jeb_message_box .message_box_sm .user_not_logged .login_signup {
+  font-size: 20px;
+  color: var(--gb-green-color);
+  cursor: pointer;
+  font-weight: 600;
+}
+.jeb_message_box .message_box_sm .user_not_logged .login_signup span:hover {
+  color: green;
+  text-decoration: underline;
+}
+.jeb_message_box .message_box_sm .user_logged_in {
+  height: 100%;
+}
+.jeb_message_box .message_box_sm .user_logged_in .initial_message {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  place-content: center;
+  float: left;
+  text-align: center;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing {
+  height: 100%;
+  position: relative;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt {
+  height: 85%;
+  overflow-y: scroll;
+  transition: 0.3s ease;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt::-webkit-scrollbar {
+  opacity: 0;
+  width: 10px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt:hover::-webkit-scrollbar {
+  opacity: 1;
+  border: 2px solid black;
+  width: 10px;
+  padding: 5px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt:hover::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* color of the track */
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt:hover::-webkit-scrollbar-thumb {
+  background-color: #d1d0d0; /* color of the draggable scrollbar */
+  border-radius: 8px; /* roundness of the scrollbar */
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt:hover::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* color of the draggable scrollbar on hover */
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .main_message {
+  float: left;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .scroll {
+  height: 10px;
+  width: 10px;
+  float: right;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .actual_message {
+  display: flex;
+  place-items: center;
+  padding: 10px;
+  min-width: 60%;
+  width: 60%;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .actual_message p {
+  margin-left: 5px;
+  font-size: 14px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .message_img {
+  box-shadow: 1px 1px 10px gray;
+  min-width: 100px;
+  max-height: 200px;
+  width: 150px;
+  height: 200px;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  float: right;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .message_img img {
+  height: 100%;
+  width: 100%;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .store_message {
+  float: left;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .message_mgmt .user_message {
+  float: right;
+  right: 0;
+  display: flex;
+  justify-content: right;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .img_preview {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+  height: 85%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .img_preview .img_preview_box {
+  margin: auto;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message {
+  border-top: 0.5px solid gray;
+  position: relative;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form {
+  position: relative;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control {
+  display: flex;
+  padding: 10px;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control .file_span {
+  position: relative;
+  height: 40px;
+  width: 40px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control .file_span .file_input {
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  opacity: 0;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control .file_span .span_icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  color: var(--gb-green-color);
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control .message_input {
+  height: 40px;
+  width: 100%;
+  padding: 15px;
+  background-color: rgb(206, 206, 206);
+  border-radius: 8px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control button {
+  height: 40px;
+  width: 50px;
+  border-radius: 8px;
+  background-color: var(--gb-orange-color);
+  padding: 5;
+}
+.jeb_message_box .message_box_sm .user_logged_in .message_listing .send_message form .form-control button:hover {
+  color: white;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal {
+  border: 2px solid black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  place-content: center;
+  place-items: center;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal .img_box {
+  max-width: 500px;
+  max-height: 60vh;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal .img_box img {
+  max-height: 60vh;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal #caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal .modal-content,
+.jeb_message_box .message_box_sm .user_logged_in .modal #caption {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+@keyframes zoom {
+  from {
+    transform: scale(0.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal .close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+.jeb_message_box .message_box_sm .user_logged_in .modal .close:hover,
+.jeb_message_box .message_box_sm .user_logged_in .modal .close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
 }/*# sourceMappingURL=index.css.map */

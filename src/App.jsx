@@ -7,6 +7,8 @@ import "./styles/index.css"
 import SliderBox from './components/ThumbnailAccordin'
 import ThumbnailAccordin from './components/ThumbnailAccordin'
 import PopGallery from './components/PopGallery'
+import Chatbox from './components/ChatBox'
+import BaseChatBox from './components/BaseChatBox'
 // import PopImageGallery from './components/PopopImageGallery'
 
 
@@ -17,7 +19,8 @@ function App() {
   return (
     <>
       {/* <KrishnaAccordin/> */}
-      <PopGallery/>
+      {/* <Chatbox/> */}
+      <BaseChatBox/>
     </>
   )
 }
