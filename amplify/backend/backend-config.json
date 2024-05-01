@@ -1,0 +1,69 @@
+{
+  "auth": {
+    "jagatpurebazar334143a6": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_jagatpurebazar334143a6_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "jagatpurebazar334143a6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_jagatpurebazar334143a6_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "jagatpurebazar334143a6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_jagatpurebazar334143a6_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "jagatpurebazar334143a6"
+        }
+      ]
+    },
+    "AMPLIFY_auth_jagatpurebazar334143a6_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "jagatpurebazar334143a6"
+        }
+      ]
+    },
+    "AMPLIFY_storage_jagatpurebazaraea364ce_bucketName": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "jagatpurebazaraea364ce"
+        }
+      ]
+    },
+    "AMPLIFY_storage_jagatpurebazaraea364ce_region": {
+      "usedBy": [
+        {
+          "category": "storage",
+          "resourceName": "jagatpurebazaraea364ce"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "jagatpurebazaraea364ce": {
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "S3",
+      "serviceType": "imported"
+    }
+  }
+}

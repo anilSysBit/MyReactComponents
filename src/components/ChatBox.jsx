@@ -9,6 +9,7 @@ import ImageIcon from "@mui/icons-material/Image";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 
+
 // Material UI component
 import Avatar from "@mui/material/Avatar";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -18,12 +19,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 const  Chatbox = () => {
   const [activeMessage, setActiveMessage] = useState({});
+  const [messages,setMessages] = useState([]);
 
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
   const [previewImage, setPreivewImage] = useState(null);
   const [moblieMg, setMobileMg] = useState(false);
   const scrollableRef = useRef(null);
+  
 
 
 
@@ -92,7 +95,9 @@ const  Chatbox = () => {
 
   const handleShowMessage = (elem) => {
     setActiveMessage(elem);
+    setMessages(elem.messages.reverse())
     setMobileMg(true);
+
   };
 
   // Image file management in sending the message form
@@ -108,14 +113,18 @@ const  Chatbox = () => {
     setPreivewImage(null);
   };
 
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Do something with file and text values (e.g., send to backend)
-    console.log("File:", file);
-    console.log("Text:", text);
-    // Reset input fields after submission if needed
+    const time = new Date();
+    const newMessage = {
+      sender:'store',
+      timestamp: time.toISOString(),
+      content:text
+    }
+
+    setMessages([...messages,newMessage])
     setFile(null);
-    setText("");
     setPreivewImage(null);
   };
 
@@ -217,33 +226,18 @@ const  Chatbox = () => {
 
     const handleLoadMessage = () => {
       setMessageLoadStatus(true);
+      
+    }
 
-      const timeoutId = setTimeout(() => {
-        setMessageLoadStatus(false); // Change isVisible state to false after 2000 milliseconds (2 seconds)
-      }, 2000);
+    useEffect(()=>{
+      scrollableRef.current.scrollIntoView({
+        behaviour:'smooth',
+        block:'end'
+        
+      })
+    },[])
 
-      // Clear the timeout when the component unmounts or when isVisible changes to false
-      return () => clearTimeout(timeoutId);
-    };
 
-    // const handleTextChange = (e) => {
-    //   let newValue = e.target.value;
-    //   setText(newValue);
-    // };
-
-    useEffect(() => {
-      // Scroll to the bottom when the component mounts or when content changes
-      if (scrollableRef.current) {
-        const isScrolledToBottom = scrollableRef.current.scrollHeight - scrollableRef.current.scrollTop === scrollableRef.current.clientHeight;
-        if (!isScrolledToBottom) {
-          scrollableRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: 'end',
-          });
-        }
-      }
-      console.log("Unconditional Rendering")
-    }, [activeMessage]);
   
 
 
@@ -282,7 +276,7 @@ const  Chatbox = () => {
           </p>
           <div className="main_message">
           {activeMessage?.messages &&
-            activeMessage?.messages.map((elem, index) => {
+            messages.map((elem, index) => {
               return (
                 <span
                   key={index}
@@ -350,9 +344,9 @@ const  Chatbox = () => {
                 type="text"
                 id="dotm"
                 name="dotm"
+                autoFocus
                 placeholder="Type your message here..."
                 className="message_input"
-                autoFocus
                 onChange={(e)=>setText(e.target.value)}
                 value={text}
               />
@@ -454,14 +448,13 @@ const  Chatbox = () => {
       </>
     );
   };
-  const userStatus = true;
 
   return (
     <div
       className={`jeb_message_box`}
     >
       <div className="message_box_sm">
-        {userStatus ? <MainMessageBox /> : <UserNotLogged />}
+        <MainMessageBox />
       </div>
     </div>
   );

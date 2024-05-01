@@ -1,0 +1,31 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-jagatpurebazar-dev-a1284-authRole",
+      "UnauthRoleArn": "arn:aws:iam::339713152951:role/amplify-jagatpurebazar-dev-a1284-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::339713152951:role/amplify-jagatpurebazar-dev-a1284-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-jagatpurebazar-dev-a1284-deployment",
+      "UnauthRoleName": "amplify-jagatpurebazar-dev-a1284-unauthRole",
+      "StackName": "amplify-jagatpurebazar-dev-a1284",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:339713152951:stack/amplify-jagatpurebazar-dev-a1284/3b50da80-0799-11ef-9315-02a34ee3f455",
+      "AmplifyAppId": "dnhg8s8wgxfhk"
+    },
+    "categories": {
+      "auth": {
+        "jagatpurebazar334143a6": {
+          "userPoolId": "ap-southeast-1_IsVdu0r3X",
+          "userPoolName": "jagatpurebazar_userpool",
+          "webClientId": "7jadgsnm342cojtb0lupu4onqp",
+          "nativeClientId": "7jadgsnm342cojtb0lupu4onqp"
+        }
+      },
+      "storage": {
+        "jagatpurebazaraea364ce": {
+          "bucketName": "jagatpurebazar",
+          "region": "ap-northeast-1"
+        }
+      }
+    }
+  }
+}
