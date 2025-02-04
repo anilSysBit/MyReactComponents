@@ -29,6 +29,7 @@ const LandingPage:React.FC = () => {
                 <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat'}>Chat App with Django Websocket API</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/cropper'}>Image Cropper</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/accordin'}>Krishna Accordin</Link></li>
+                <li></li>
             </ul>
         </div>
     </AppContainer>
