@@ -50,8 +50,8 @@ const NestedAccordion = () => {
         // Add more accordion items as needed
     ];
 
-    const renderAccordionContent = (content) => {
-        return content.map((item, index) => {
+    const renderAccordionContent = (content:any) => {
+        return content.map((item:any, index:number) => {
             if (item.type === 'item') {
                 return <Typography key={index}>{item.content}</Typography>;
             } else if (item.type === 'accordion') {
