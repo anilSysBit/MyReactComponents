@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router';
 import styled from 'styled-components';
+import ImageMagnifier from './ImageMagnifier';
 
 const LandingPage:React.FC = () => {
     const Header = styled.header`
@@ -29,9 +30,12 @@ const LandingPage:React.FC = () => {
                 <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat'}>Chat App with Django Websocket API</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/cropper'}>Image Cropper</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/accordin'}>Krishna Accordin</Link></li>
-                <li></li>
+                <li className='bg-slate-200 p-2'><Link to={'/screen-learning'}>Screen Learning</Link></li>
+                <li className='bg-slate-200 p-2'><Link to={'/slider'}>Custom Slick Carasoul</Link></li>
             </ul>
         </div>
+
+        {/* <ImageMagnifier imageSrc='https://picsum.photos/500/' zoomLevel={2}/> */}
     </AppContainer>
   )
 }

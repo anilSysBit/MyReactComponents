@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+body{
+    user-select: none;
+}
+.scale_line{
+    width: 2px;
+    height: 5px;
+    background-color: black;
+    display: inline-block;
+}
+.scale{
+    border: 1px solid blue;
+    height: 100px;
+    display: flex;
+    /* gap: 3.78px; */
+    gap: calc(3px);
+    /* gap: 3.78px; */
+}
+
+.half_cm{
+    height: 10px;
+}
+.cm{
+    height: 20px;
+}

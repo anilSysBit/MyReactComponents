@@ -14,6 +14,8 @@ import ChatBox from './components/PlatformChat/ChatBox'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import LandingPage from './pages/LandingPage'
 import ImageCrop from './components/ImageCrop'
+import ScreenLearning from './pages/ScreenLearning'
+import CarasoulPage from './pages/CarasoulPage'
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
     <Route path='' element={<LandingPage/>} />
     <Route path='/chat' element={<ChatBox/>}/>
     <Route path='/cropper' element={<ImageCrop/>}/>
+    <Route path='/screen-learning' element={<ScreenLearning/>}/>
+    <Route path='/slider' element={<CarasoulPage/>}/>
    </Routes>
    </BrowserRouter>
 
