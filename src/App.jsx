@@ -4,7 +4,6 @@ import './app.css'
 import SliderBox from './components/ThumbnailAccordin'
 import Chatbox from './components/ChatBox'
 import BaseChatBox from './components/BaseChatBox'
-import { Buffer } from 'buffer'
 // import ImageCrop from './components/ImageCrop'
 
 
