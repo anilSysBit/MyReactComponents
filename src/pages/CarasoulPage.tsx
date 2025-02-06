@@ -72,7 +72,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
 
             // const prevTransformedWidth = transformWidth;
             const newCalculatedWidth = transformWidth + newWidth
-            console.log('new width',newWidth)
+            // console.log('new width',newWidth)
             if(newCalculatedWidth < 0){
                 setTransformingWidth(0)
                 return;
@@ -83,6 +83,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
                 setTransformingWidth(componentWidth * (componentLength - 1))
                 return;
             }
+
             setTransformingWidth(newCalculatedWidth)
 
             // if(transfor)
@@ -117,29 +118,42 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
 
     }
 
+    const calculateAndTranformWithActiveIndex =()=>{
+        const indexPosition = 10 - Math.round((componentWidth * 10 - transformingWidth)/componentWidth)
+        console.log('Active Index',indexPosition)
+        setTransformingWidth(indexPosition * componentWidth)
+        setTransformWidth(indexPosition * componentWidth)
+    }
+
     const handleMouseUp =(e:React.MouseEvent<HTMLDivElement>)=>{
         // console.log('leaved the click event')
         setCursorType('grab');
         setCursorDownPoint([e.clientX,e.clientY])
-        // console.log('Mouse Down Place',e.clientX,e.clientY)
-        setTransformWidth(transformingWidth);
-
-        console.log('last transformed width',transformingWidth)
-        // handleTransformMovement();
+        calculateAndTranformWithActiveIndex();
         setDragging(false)
         
     }
+
 
     const handleMouseOut =()=>{
         setCursorType('grab');
         setDragging(false);
         
     }
+
+
+    const sliderComponentStyle:React.CSSProperties = {
+        cursor:cursorType,
+        width:`${containerWidth * 10}px`,
+        transform:`translate3d(-${transformingWidth}px,0px,0px)`,
+        transition:!dragging ? '-webkit-transform 500ms':''
+    }
+
   return (
     <div className="carasoul_page p-10">
         <p>Slider Carasoul Container</p>
         <div 
-            className="carasoul-main-container border-2 border-red-500 overflow-hidden  relative transition-transform" 
+            className="carasoul-main-container overflow-hidden  relative transition-transform" 
             ref={sliderContainerRef} 
             onDragStart={handleDragStart}
             onMouseMove={handleMouseMove} 
@@ -149,14 +163,9 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
             onMouseOut={handleMouseOut}
             >
             <div 
-                className={`carasoul_container border-2 border-green-500 h-[30vh] flex`}
+                className={`carasoul_container h-[30vh] flex`}
                 ref={sliderComponentRef}
-                style={{
-                cursor:cursorType,
-                width:`${containerWidth * 10}px`,
-                transform:`translate3d(-${transformingWidth}px,0px,0px)`,
-                // transition:'-webkit-transform 500ms'
-                }}
+                style={sliderComponentStyle}
                 >
                 {[1,2,3,4,5,6,7,8,9,10].map((elem,index)=>{
                     return(
