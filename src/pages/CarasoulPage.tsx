@@ -1,11 +1,14 @@
+import { ArrowRight, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react'
 
 interface CarasoulProps{
     itemsToShow?:number;
+    showPrevNextBtn?:boolean;
 }
 
 const CarasoulPage:React.FC<CarasoulProps> = ({
-    itemsToShow=1
+    itemsToShow=1,
+    showPrevNextBtn=true,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -26,6 +29,9 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
     const [transformingWidth,setTransformingWidth] = useState<number>(0);
     const [activeIndex,setActiveIndex] = useState<number>(0);
 
+
+    const [prevBtnStatus,setPrevBtnStatus] = useState<boolean>(false);
+    const [nextBtnStatus,setNextBtnStatus] = useState<boolean>(false);
 
     const componentLength:number = 10;
 
@@ -176,15 +182,45 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
     }
 
 
+
     const handleDotClick =(index:number)=>{
         setActiveIndex(index)
-        setTransformingWidth(index * componentWidth)
+        // setTransformingWidth(index * componentWidth)
     }
+
+
+
+    const handlePrevClick =(e:React.MouseEvent)=>{
+        if(activeIndex > 0){
+            setActiveIndex(activeIndex - 1)
+        }
+    }
+    const handleNextClick =(e:React.MouseEvent)=>{
+        if(activeIndex < componentLength-1){
+            setActiveIndex(activeIndex + 1)
+        }
+    }
+
+
+    useEffect(()=>{
+        setTransformingWidth(activeIndex * componentWidth)
+        if(activeIndex == componentLength-1){
+            setNextBtnStatus(true);
+        }else{
+            setNextBtnStatus(false);
+        }
+        if(activeIndex < 1){
+            setPrevBtnStatus(true);
+        }else{
+            setPrevBtnStatus(false)
+        }
+    },[activeIndex])
   return (
-    <div className="carasoul_page p-10">
-        <p>Slider Carasoul Container</p>
+    <div className='p-2'>
+    <p>Slider Carasoul Container</p>
+    <div className="carasoul_page relative">
         <div 
-            className="carasoul-main-container overflow-hidden  relative transition-transform" 
+            className="carasoul-main-container overflow-hidden transition-transform" 
             ref={sliderContainerRef} 
             onDragStart={handleDragStart}
             onMouseMove={handleMouseMove} 
@@ -200,19 +236,33 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
                 >
                 {[1,2,3,4,5,6,7,8,9,10].map((elem,index)=>{
                     return(
-                        <div key={index} tabIndex={index} className={`border-2 border-slate-600 h-full flex`} style={{width:`${componentWidth}px`}}>
-                            Component {elem}
+                        <div key={index} tabIndex={index} className={`p-2 border-slate-600 h-full`} style={{width:`${componentWidth}px`}}>
+                            {/* Component {elem} */}
+                            <div className='bg-green-300 h-full w-full% flex place-content-center place-items-center'>{elem}</div>
                         </div>
                     )
                 })}
 
             </div>
         </div>
+        <button 
+            onClick={handlePrevClick} 
+            disabled={prevBtnStatus} 
+            className={`prev_btn absolute top-1/3 rounded-full h-10 w-10 bg-slate-300 cursor-pointer ${prevBtnStatus && 'opacity-70'}`}>
+            <KeyboardArrowLeft/>
+        </button>
+        <button 
+            onClick={handleNextClick} 
+            disabled={nextBtnStatus} 
+            className={`next_btn absolute top-1/3 right-0 rounded-full h-10 w-10 bg-slate-300 cursor-pointer hover:shadow shadow-slate-600 ${nextBtnStatus && 'opacity-70'}`}>
+                <KeyboardArrowRight/>
+        </button>
         <div className="dots flex gap-2 place-content-center place-items-center p-2">
-                    {Array.from({length:componentLength}).map((_,index2)=>(
-                        <span key={index2} onClick={()=>handleDotClick(index2)} className={`h-3 w-3 rounded-full cursor-pointer ${activeIndex == index2 ?  'bg-slate-500' : 'bg-slate-200'}`}></span>
-                    ))}
-                </div>
+            {Array.from({length:componentLength}).map((_,index2)=>(
+                <span key={index2} onClick={()=>handleDotClick(index2)} className={`h-3 w-3 rounded-full cursor-pointer ${activeIndex == index2 ?  'bg-slate-500' : 'bg-slate-200'}`}></span>
+            ))}
+        </div>
+    </div>
     </div>
   )
 }
