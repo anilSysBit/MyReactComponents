@@ -1,14 +1,17 @@
 import { ArrowRight, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
 import React, { useEffect, useRef, useState } from 'react'
+import { G } from 'react-router/dist/development/fog-of-war-CCAcUMgB';
 
 interface CarasoulProps{
     itemsToShow?:number;
     showPrevNextBtn?:boolean;
+    itemToScroll?:number;
 }
 
 const CarasoulPage:React.FC<CarasoulProps> = ({
-    itemsToShow=1,
+    itemsToShow=2,
     showPrevNextBtn=true,
+    itemToScroll=2,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -35,9 +38,10 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
     const [activeTransform,setActiveTransform] = useState<boolean>(false);
 
     const dataArray = [1,2,3,4,5,6]
-    const convertedArray = [dataArray[dataArray.length -1],...dataArray,...dataArray.slice(0,dataArray.length)]
     const componentLength:number = dataArray.length
-    const convertedLength:number = convertedArray.length 
+    const convertedArray = [...dataArray.slice(-itemsToShow),...dataArray,...dataArray.slice(0,dataArray.length)]
+    // console.log('converetd array',convertedArray)
+    const convertedLength:number = convertedArray.length
 
 
     const getContainerData  =()=>{
@@ -46,7 +50,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
             const rect = sliderContainerRef.current.getBoundingClientRect();
             const rectWidth = rect.width
             setContainerWidth(rectWidth);
-            const oneComponentWidth = rectWidth / itemsToShow
+            const oneComponentWidth = rectWidth
             setComponentWidth(oneComponentWidth);
             setTransformingWidth(oneComponentWidth)
             setTransformWidth(oneComponentWidth)
@@ -74,9 +78,17 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
     }
 
     // component function
-    const handleMouseMove =(event:React.MouseEvent)=>{
+    const handleMouseMove =(e:React.MouseEvent | React.TouchEvent)=>{
         // setMousePosition([event.clientX,event.clientY])
-        const {clientX,clientY} = event;
+        let clientX;
+        let clientY;
+        if ("touches" in e) {
+            clientX = e.touches[0].clientX
+            clientY = e.touches[0].clientY
+        } else {
+            clientX = e.clientX
+            clientY = e.clientY
+        }
         if(dragging){
             // console.log('mouse position',mouseX,mouseY);
             let newWidth = startX - clientX;
@@ -121,12 +133,16 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
         // setCursorType('grabbing');
     }
 
-    const handleMouseDown =(e:React.MouseEvent<HTMLDivElement>)=>{
+    const handleMouseDown =(e:React.MouseEvent | React.TouchEvent)=>{
         // console.log('Clicked to the element')
         setActiveTransform(false)
         setCursorType('grabbing');
         setDragging(true);
-        setDragStartPoint([e.clientX,e.clientY])
+        if ("touches" in e) {
+            setDragStartPoint([e.touches[0].clientX, e.touches[0].clientY]);
+        } else {
+            setDragStartPoint([e.clientX, e.clientY]);
+        }
         // console.log('drag start points',e.clientX,e.clientY)
 
     }
@@ -149,9 +165,10 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
         const indexPosition = convertedLength -  (unscrolledWidth / componentWidth)
 
         // console.log('unscrolled width',unscrolledWidth)
-        // console.log('active index',activeIndex,indexPosition)
+        console.log('active index',activeIndex,indexPosition)
         // if(indexPosition < activeIndex/3)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
+        console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -161,14 +178,19 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
 
     }
 
-    const handleMouseUp =(e:React.MouseEvent<HTMLDivElement>)=>{
+    const handleMouseUp =(e:React.MouseEvent | React.TouchEvent)=>{
         // console.log('leaved the click event')
         setActiveTransform(true);
         setCursorType('grab');
-        setCursorDownPoint([e.clientX,e.clientY])
-        // now the active index will be calculated 
-        calculateAndTranformWithActiveIndex(e.clientX);
         setDragging(false)
+        // now the active index will be calculated 
+        if ("touches" in e) {
+            setCursorDownPoint([e.touches[0].clientX, e.touches[0].clientY]);
+            calculateAndTranformWithActiveIndex(e.touches[0].clientX);
+        } else {
+            setCursorDownPoint([e.clientX,e.clientY])
+            calculateAndTranformWithActiveIndex(e.clientX);
+        }
         
     }
 
@@ -194,20 +216,22 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
         let initialConversion = (newActiveIndex) * componentWidth
         setTransformingWidth(initialConversion)
         setTransformWidth(initialConversion)
-
         setTimeout(()=>{
             setActiveTransform(false);
+
+            // reversing the scroll options
             if(index==0){
-                newActiveIndex = componentLength
-            }else if(index == componentLength+1){
-                newActiveIndex = index - componentLength
+                newActiveIndex = Math.round(componentLength / itemsToShow)
+            }else if(index == Math.round(componentLength/itemsToShow)+1){
+                newActiveIndex = index - (componentLength / itemsToShow)
             }
+            console.log('new active index timeout',newActiveIndex)
 
              initialConversion = (newActiveIndex) * componentWidth
             setTransformingWidth(initialConversion)
             setTransformWidth(initialConversion)
             setActiveIndex(newActiveIndex)
-        },200)
+        },500)
 
 
 
@@ -237,7 +261,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
         }
     }
     const handleNextClick =(e:React.MouseEvent)=>{
-        if(activeIndex < componentLength-1){
+        if(activeIndex < (Math.floor(componentLength/itemsToShow))){
             setActiveIndex(activeIndex + 1)
         }
     }
@@ -264,6 +288,9 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseOut={handleMouseOut}
+            onTouchStart={handleMouseDown}
+            onTouchEnd={handleMouseUp}
+            onTouchMove={handleMouseMove}
             >
             <div 
                 className={`carasoul_container h-[30vh] flex`}
@@ -273,7 +300,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
                 
                 {convertedArray.map((elem,index)=>{
                     return(
-                        <div key={index} tabIndex={index-1} className={`p-2 border-slate-600 h-full`} style={{width:`${componentWidth}px`}}>
+                        <div key={index} tabIndex={index-1} className={`p-2 border-slate-600 h-full`} style={{width:`${componentWidth/itemsToShow}px`}}>
                             {/* Component {elem} */}
                             <div className='bg-green-300 h-full w-full% flex place-content-center place-items-center'>{elem}
                                 <img src={`https://picsum.photos/100?random=${elem}`} alt="" />
@@ -297,7 +324,7 @@ const CarasoulPage:React.FC<CarasoulProps> = ({
                 <KeyboardArrowRight/>
         </button>
         <div className="dots flex gap-2 place-content-center place-items-center p-2">
-            {Array.from({length:componentLength}).map((_,index2)=>(
+            {Array.from({length:Math.floor(componentLength/itemsToShow)}).map((_,index2)=>(
                 <span key={index2} onClick={()=>handleDotClick(index2+1)} className={`h-3 w-3 rounded-full cursor-pointer ${activeIndex == index2+1 ?  'bg-slate-500' : 'bg-slate-200'}`}></span>
             ))}
         </div>
