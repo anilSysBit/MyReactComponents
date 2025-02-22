@@ -14,6 +14,7 @@ import LandingPage from './pages/LandingPage'
 import ImageCrop from './components/ImageCrop'
 import ScreenLearning from './pages/ScreenLearning'
 import CarasoulPage from './pages/CarasoulPage'
+import Magnifier from './pages/Magnifier'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
     <Route path='/cropper' element={<ImageCrop/>}/>
     <Route path='/screen-learning' element={<ScreenLearning/>}/>
     <Route path='/slider' element={<CarasoulPage/>}/>
+    <Route path='/magnifier' element={<Magnifier/>}/>
    </Routes>
    </BrowserRouter>
 
