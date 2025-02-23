@@ -27,9 +27,10 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     const [[leftWidth,topHeight],setVerticalHeight] = useState<[number,number]>([0,0]);
     const [[rightWidth,bottomHeight],setHorizontalWidth] = useState<[number,number]>([0,0]);
     const imageContainerRef = useRef<HTMLDivElement | null>(null);
-    const imageRef = useRef<HTMLDivElement | null>(null);
+    const imageRef = useRef<HTMLImageElement | null>(null);
+    const [[imageHeight,imageWidth],setImageAxis] = useState<[number,number]>([0,0])
     const [magnifiedPosition,setMagnifiedPosition] = useState<number>(0);
-    const defaultImage = 'https://picsum.photos/1000'
+    const defaultImage = 'https://picsum.photos/1200/1500'
 
     // const [zaliHeight,zaliWidth] = [100,150]
 
@@ -44,16 +45,22 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     }
     const magnifiedImageStyle:React.CSSProperties = {
         marginTop:'5px',
-        // padding:'5px',
         border:'1px solid black',
         height:'300px',
         width:'300px',
-        boxSizing:'border-box',
-        // transform:'scale3d(1,1,1)', 
         zIndex:100,
+        position:'relative',
         overflow:'hidden',
-        // backgroundColor:'white'
-        // display:'block'
+        backgroundImage: `url(${defaultImage})`,
+        backgroundSize: `${300 * zoomLevel}px ${
+            300 * zoomLevel
+          }px`,
+        pointerEvents: 'none',
+        
+        // transform: 'translate(-50%, -50%)',
+        backgroundRepeat:"no-repeat",
+        backgroundPositionX: `${-zaliX - (zaliHeight / 2) * zoomLevel}px`,
+        backgroundPositionY: `${-zaliY - (zaliWidth / 2) * zoomLevel}px`
     }
 
     const MCD:number = 50; //mouse center distance
@@ -61,6 +68,12 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     const handleMouseOver =(e:React.MouseEvent)=>{
         
         // console.log('mouse positon',e.clientX,e.clientY)
+        if(imageRef.current){
+            const {naturalWidth,naturalHeight} = imageRef.current
+            setImageAxis([naturalHeight,naturalWidth])
+            console.log("Natural height and width",naturalHeight,naturalWidth)
+        }
+
 
     }
     const handleMouseMove =(e:React.MouseEvent)=>{
@@ -88,7 +101,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
                 // console.log('overtaking',overtakingX)
             }
             // overlapping bottom
-            console.log('lwidth,yHeight',lWidth,yHeight)
+            // console.log('lwidth,yHeight',lWidth,yHeight)
             if(yHeight + (zaliHeight / 2) >= height){
                 const overtakingY = yHeight + (zaliHeight / 2) - height
                 calcZaliY -= overtakingY
@@ -97,13 +110,13 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             // overlapping left
             if(lWidth - (zaliWidth / 2) <= 0){
                 const overtakingX = lWidth - (zaliWidth / 2)
-                console.log('Yes Width less than zero',overtakingX)
+                // console.log('Yes Width less than zero',overtakingX)
                 calcZaliX -= overtakingX
             }
             // overlapping top
             if(yHeight - (zaliWidth / 2) <= 0){
                 const overtakingY = yHeight - (zaliHeight / 2)
-                console.log('Yes Width less than zero',overtakingY)
+                // console.log('Yes Width less than zero',overtakingY)
                 calcZaliY -= overtakingY
             }
             setZaliPosition([calcZaliX,calcZaliY])
@@ -120,7 +133,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     <div className='p-2'>
 
         <div 
-            className="img_container cursor-crosshair border-2 relative overflow-hidden" 
+            className="img_container flex cursor-crosshair border-2 relative overflow-hidden" 
             style={imageContainerStyle} 
             ref={imageContainerRef}
             onMouseOver={handleMouseOver}
@@ -129,20 +142,9 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             >
                 <div 
                     style={{
-                        width:leftWidth - 50,
+                        width:leftWidth,
                         height:'100%',
-                        border:'1px solid white',
-                        position:'absolute',
-                        // backgroundColor:'rgba(0,0,0,0.6)'
-                    }}
-                    
-                    />
-                                    <div 
-                    style={{
-                        width:leftWidth + 50,
-                        height:'100%',
-                        // right:0,
-                        border:'1px solid blue',
+                        // border:'1px solid white',
                         position:'absolute',
                         // backgroundColor:'rgba(0,0,0,0.6)'
                     }}
@@ -152,19 +154,8 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
                 <div 
                     style={{
                         width:'100%',
-                        height:topHeight - 50,
-                        border:'1px solid yellow',
-                        position:'absolute',
-                        // backgroundColor:'rgba(0,0,0,0.6)',
-
-                    }}
-                        />
-                                        <div 
-                    style={{
-                        width:'100%',
-                        height:topHeight +50,
-                        // bottom:0,
-                        border:'1px solid red',
+                        height:topHeight,
+                        // border:'1px solid yellow',
                         position:'absolute',
                         // backgroundColor:'rgba(0,0,0,0.6)',
 
@@ -183,28 +174,13 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             }}
             >
         </div>
-            <img src={defaultImage || image} alt=""/>
+            <img src={defaultImage || image} className='m-auto h-full'  alt="" ref={imageRef}/>
         </div>
         <div 
             className='preview'
             style={magnifiedImageStyle}
             
         >
-            <img 
-                src={defaultImage || image} 
-                alt=""
-                style={{
-                    // position:'absolute',
-                    left:0,
-                    top:0,
-                    transform:`translate(${mouseX }px,${mouseY }px)`,
-                    
-                    // width:'auto',
-                    // visibility:'hidden',
-                    zIndex:1,
-                }}
-            />
-
         </div>
     </div>
   )
