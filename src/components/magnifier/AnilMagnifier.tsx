@@ -11,11 +11,13 @@ interface MagnifierProps{
     zoomLevel?:number;
     zaliHeight?:number;
     zaliWidth?:number;
+    previewMultiple?:number;
 }
 
 const AnilMagnifier:React.FC<MagnifierProps> = ({
     image,
     zoomLevel=2,
+    previewMultiple=2,
     // zaliHeight=100,
     // zaliWidth=100,
 }) => {
@@ -28,8 +30,10 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     const [[leftWidth,topHeight],setVerticalHeight] = useState<[number,number]>([0,0]);
     const [[rightWidth,bottomHeight],setHorizontalWidth] = useState<[number,number]>([0,0]);
     const imageContainerRef = useRef<HTMLDivElement | null>(null);
+    const magnifiedImageRef = useRef<HTMLDivElement | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
-    const [[imageHeight,imageWidth],setImageAxis] = useState<[number,number]>([0,0])
+    const [[imageWidth,imageHeight],setImageAxis] = useState<[number,number]>([0,0])
+    const [[containerWidth,containerHeight],setContainerAxis] = useState<[number,number]>([0,0])
     const [magnifiedPosition,setMagnifiedPosition] = useState<number>(0);
     const defaultImage = 'https://i.redd.it/zziah8ln4ttb1.jpg'
     
@@ -41,31 +45,37 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
 
     const imageContainerStyle:React.CSSProperties = {
         height:'300px',
-        width:'300px',
+        width:'350px',
         zIndex:20,
     }
     const mainContainerTyle:React.CSSProperties = {
         padding:'5px'
     }
     const magnifiedImageStyle:React.CSSProperties = {
-        marginTop:'5px',
         border:'1px solid black',
-        height:imageHeight * 1.5 ,
-        width: imageWidth * 1.5,
+        height:`${containerHeight * previewMultiple}px`,
+        width: `${containerHeight * previewMultiple}px` ,
         zIndex:100,
         position:'relative',
         overflow:'hidden',
+        
     }
 
     const MCD:number = 50; //mouse center distance
 
     const handleMouseOver =(e:React.MouseEvent)=>{
-        
         // console.log('mouse positon',e.clientX,e.clientY)
         if(imageContainerRef.current && imageRef.current){
             const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
-            setZaliArea([height/ 3, width / 3])
-            setImageAxis([width,height])
+            setZaliArea([height/ 2, width / 2])
+            setContainerAxis([width,height])
+
+            const imageElem = imageRef.current
+            const imageBounds = imageElem.getBoundingClientRect();
+            setImageAxis([imageBounds.width, imageBounds.height]);
+
+
+            console.log('image azis',imageBounds.width,imageBounds.height)
             // const {naturalWidth,naturalHeight} = imageRef.current
             // setImageAxis([naturalHeight,naturalWidth])
             // console.log("Natural height and width",naturalHeight,naturalWidth)
@@ -127,13 +137,13 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
 
     }
   return (
-    <div className='p-2 flex'>
+    <div className='p-2 flex gap-2'>
 
         <div 
             className="img_container flex cursor-crosshair border-2 relative overflow-hidden" 
             style={imageContainerStyle} 
             ref={imageContainerRef}
-            onMouseOver={handleMouseOver}
+            onMouseEnter={handleMouseOver}
             onMouseMove={handleMouseMove}
             onMouseOut={handleMouseOut}
             >
@@ -163,27 +173,41 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             // ref={lensRef}
             style={{
                 position:'absolute',
-                backgroundColor:'rgba(0,0,0,0.6)',
+                // backgroundColor:'rgba(0,0,0,0.6)',
+                border:'1px solid white',
+                // backgroundColor:'white',
+                backgroundImage:`url(${defaultImage})`,
                 height:`${zaliHeight}px`,
                 width:`${zaliWidth}px`,
                 left:zaliX,
                 top:zaliY,
+                backgroundSize: `${containerWidth}px ${containerHeight}px`,
+                backgroundRepeat:'no-repeat',
+                backgroundPositionX: `${-zaliX}px`,
+                backgroundPositionY: `${-zaliY}px`,
             }}
             >
         </div>
-            <img src={defaultImage || image} className='m-auto'  alt="" ref={imageRef}/>
+            <img 
+                src={defaultImage || image} 
+                className='mx-auto'  alt="" 
+                ref={imageRef}
+                width="100%"
+                height="100%"
+                />
         </div>
         <div 
             className='preview'
             style={magnifiedImageStyle}
+            ref={magnifiedImageRef}
             
         >
             <img
               src={defaultImage}
               style={{
                 position: 'absolute',
-                left: `${(-zaliX * zoomLevel + zaliHeight / 2) - (zaliHeight / 2) }px`,
-                top: `${(-zaliY * zoomLevel + zaliWidth / 2) - (zaliHeight / 2) }px`,
+                left: `${(-zaliX * previewMultiple *  zoomLevel )}px`,
+                top: `${(-zaliY * previewMultiple *  zoomLevel ) }px`,
                 transform: `scale(${zoomLevel})`,
                 transformOrigin: '0 0',
                 pointerEvents: 'none'
