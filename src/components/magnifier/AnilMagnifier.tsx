@@ -103,6 +103,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     }
     const handleMouseMove =(e:React.MouseEvent)=>{
         if(imageContainerRef.current && imageRef.current){
+            const imageBounds = imageRef.current.getBoundingClientRect();
             const containerBounds = imageContainerRef.current.getBoundingClientRect();
             const { left, top, width, height } = containerBounds
             // console.log('left of')
@@ -112,14 +113,15 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             const lWidth = xPos-left
             const yHeight = yPos-top
             setVerticalHeight([lWidth,yHeight])
-            console.log(left,top,width,height,xPos,yPos)
+            // console.log(left,top,width,height,xPos,yPos)
             setMousePosition([xPos, yPos])
 
-            const marginLeft = (containerBounds.width - width)/2
-            console.log('margin-left',marginLeft)
+            // const marginLeft = (width - imageBounds.width)/2
+            // const marginTop = (height - imageBounds.height)/2
+            // console.log('margins',marginLeft,marginTop)
             // zali position
-            let calcZaliX = xPos-left-(zaliWidth/2) + marginLeft
-            let calcZaliY = yPos-top-(zaliHeight/2) 
+            let calcZaliX = xPos-left-(zaliWidth/2)
+            let calcZaliY = yPos-top-(zaliHeight/2)
 
             setZaliPosition([calcZaliX,calcZaliY]);
 
@@ -205,7 +207,11 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             }}
             />}
         
-            <img src={image} className='mx-auto' alt="" ref={imageRef}/>
+            <img src={image} className='m-auto' style={{
+                height:'100%',
+                width:'100%',
+                objectFit:'contain'
+            }} alt="" ref={imageRef}/>
         </div>
         <div 
             className={previewClassName}
@@ -219,7 +225,9 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
               style={{
                 position: 'absolute',
                 height:'100%',
-                marginLeft:`${(width-imageWidth) / 2*zoomLevel}px`,
+                width:"100%",
+                objectFit:'contain',
+                
                 left: `${(-zaliX * previewMultiple *  zoomLevel * zaliMultiple)  }px`,
                 top: `${(-zaliY * previewMultiple *  zoomLevel *zaliMultiple) }px`,
                 transform: `scale(${zoomLevel * zaliMultiple})`,
