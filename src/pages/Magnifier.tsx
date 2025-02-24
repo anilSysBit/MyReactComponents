@@ -3,9 +3,10 @@ import AnilMagnifier from '../components/magnifier/AnilMagnifier'
 import ImageMagnifier from '../components/magnifier/BubbleMagnifier'
 
 const Magnifier = () => {
-  const defaultImage = 'https://i.redd.it/zziah8ln4ttb1.jpg'
+  // const defaultImage = 'https://i.redd.it/zziah8ln4ttb1.jpg'
     // const defaultImage = "https://th.bing.com/th/id/OIP.kasbvyxrOBq5LxyycYg3fgHaIY?rs=1&pid=ImgDetMain"
-
+  const defaultImage = "https://ethanselzer.github.io/react-image-magnify/static/media/wristwatch_687.8ea75ffc.jpg"
+  // const defaultImage ='https://picsum.photos/500/600' 
   return (
     <>
     <ImageMagnifier
@@ -19,8 +20,10 @@ const Magnifier = () => {
 
     <AnilMagnifier
     width={350}
-    height={350}
-      image={defaultImage}
+    height={400}
+    previewMultiple={1}
+    image={defaultImage}
+    zaliMultiple={2}
     />
     </>
   )

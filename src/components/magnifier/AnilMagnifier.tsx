@@ -17,17 +17,19 @@ interface MagnifierProps{
     previewMargin?:number;
     previewClassName?:string;
     containerClassName?:string;
+    zaliMultiple?:number;
 }
 
 const AnilMagnifier:React.FC<MagnifierProps> = ({
     image,
     zoomLevel=2,
-    previewMultiple=2,
+    previewMultiple=1,
     width=300,
     height=300,
     previewMargin=20,
     previewClassName,
-    containerClassName
+    containerClassName,
+    zaliMultiple=2,
     // zaliHeight=100,
     // zaliWidth=100,
 }) => {
@@ -88,7 +90,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
         if(imageContainerRef.current && imageRef.current){
             const imageBounds = imageRef.current.getBoundingClientRect();
             const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
-            setZaliArea([height/ 2, width / 2])
+            setZaliArea([height/ (2*zaliMultiple), width / (2*zaliMultiple)])
             setImageAxis([imageBounds.width,imageBounds.height])
 
             console.log('container azis',imageBounds.height,imageBounds.width)
@@ -205,7 +207,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
         
             <img src={image} className='mx-auto' alt="" ref={imageRef}/>
         </div>
-        {zaliActive && <div 
+        <div 
             className={previewClassName}
 
             style={magnifiedImageStyle}
@@ -217,16 +219,16 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
               style={{
                 position: 'absolute',
                 height:'100%',
-                marginLeft:`${(width-imageWidth)*zoomLevel}px`,
-                left: `${(-zaliX * previewMultiple *  zoomLevel)  }px`,
-                top: `${(-zaliY * previewMultiple *  zoomLevel ) }px`,
-                transform: `scale(${zoomLevel})`,
+                marginLeft:`${(width-imageWidth) / 2*zoomLevel}px`,
+                left: `${(-zaliX * previewMultiple *  zoomLevel * zaliMultiple)  }px`,
+                top: `${(-zaliY * previewMultiple *  zoomLevel *zaliMultiple) }px`,
+                transform: `scale(${zoomLevel * zaliMultiple})`,
                 transformOrigin: '0 0',
                 pointerEvents: 'none'
               }}
               alt="Magnified"
             />
-        </div>}
+        </div>
     </div>
   )
 }

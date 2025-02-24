@@ -90,7 +90,7 @@ const ThumbnailAccordin = () => {
     backgroundColor: "white",
     backgroundImage: `url('${imageval.value}')`,
     backgroundRepeat: "no-repeat",
-    backgroundSize:'cover',
+    // backgroundSize:'cover',
 
     //calculate zoomed image size
     backgroundSize: `${imgWidth * zoomLevel}px ${
