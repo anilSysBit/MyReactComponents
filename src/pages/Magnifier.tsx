@@ -19,11 +19,11 @@ const Magnifier = () => {
     <hr />
 
     <AnilMagnifier
+    image={defaultImage}
     width={350}
     height={400}
     previewMultiple={1}
-    image={defaultImage}
-    zaliMultiple={2}
+    zaliMultiple={1}
     />
     </>
   )

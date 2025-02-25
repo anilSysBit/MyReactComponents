@@ -18,6 +18,7 @@ interface MagnifierProps{
     previewClassName?:string;
     containerClassName?:string;
     zaliMultiple?:number;
+    magnifyOnImage?:boolean;
 }
 
 const AnilMagnifier:React.FC<MagnifierProps> = ({
@@ -30,6 +31,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     previewClassName,
     containerClassName,
     zaliMultiple=2,
+    magnifyOnImage=false,
     // zaliHeight=100,
     // zaliWidth=100,
 }) => {
@@ -69,6 +71,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     const mainContainerTyle:React.CSSProperties = {
         padding:'5px'
     }
+
     const magnifiedImageStyle:React.CSSProperties = {
         border:'1px solid gray',
         height:`${height * previewMultiple}px`,
@@ -92,6 +95,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
             const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
             setZaliArea([height/ (2*zaliMultiple), width / (2*zaliMultiple)])
             setImageAxis([imageBounds.width,imageBounds.height])
+            
 
             console.log('container azis',imageBounds.height,imageBounds.width)
             // const {naturalWidth,naturalHeight} = imageRef.current
@@ -160,6 +164,25 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
     const handleMouseOut =(e:React.MouseEvent)=>{
         setZaliActive(false);
     }
+
+
+    const zaliBackgroundPositioning =()=>{
+        if(magnifyOnImage){
+            return{
+                backgroundSize:`${zoomLevel * (width - (width-imageWidth))}px ${zoomLevel * (height-(height-imageHeight))}px`,
+                // backgroundSize:'cover',
+                backgroundPositionX: `${-zaliX * zoomLevel + zoomLevel * (width-imageWidth)/2}px`,
+                backgroundPositionY: `${-zaliY * zoomLevel + zoomLevel *(height-imageHeight)/2}px`,
+            }
+        }
+        return{
+            backgroundSize:`${width - (width-imageWidth)}px ${height-(height-imageHeight)}px`,
+        // backgroundSize:'cover',
+        backgroundPositionX: `${-zaliX + (width-imageWidth)/2}px`,
+        backgroundPositionY: `${-zaliY + (height-imageHeight)/2}px`,
+        }
+    }
+    
   return (
     <div className='p-2 flex flex-wrap gap-2'>
 
@@ -193,27 +216,42 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
 
                     }}
                         />
-        {zaliActive && <div 
+        {zaliActive && 
+        <>
+        <div 
             className=""
             // ref={lensRef}
             style={{
                 position:'absolute',
-                backgroundColor:'rgba(0,0,0,0.6)',
-                border:'1px solid white',
+                backgroundColor:'white',
+                border:'1px dotted white',
                 height:`${zaliHeight}px`,
                 width:`${zaliWidth}px`,
                 left:zaliX,
                 top:zaliY,
+                zIndex:10,
+                backgroundImage:`url(${image})`,
+                backgroundRepeat:'no-repeat',
+                ...zaliBackgroundPositioning(),
             }}
-            />}
+            />
+
+            <span className='fade_layer' style={{
+                            position:"absolute",
+                            top:0,
+                            left:0,
+                            height:'100%',
+                            width:'100%',
+                            backgroundColor:"rgba(0,0,0,0.6)"
+                        }}/>
+            </>
+            }
+            
         
-            <img src={image} className='m-auto' style={{
-                height:'100%',
-                width:'100%',
-                objectFit:'contain'
+            <img src={image} className={`${width > height ? 'mx-auto' : 'my-auto'}`} style={{
             }} alt="" ref={imageRef}/>
         </div>
-        <div 
+        {!magnifyOnImage && <div 
             className={previewClassName}
 
             style={magnifiedImageStyle}
@@ -227,7 +265,6 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
                 height:'100%',
                 width:"100%",
                 objectFit:'contain',
-                
                 left: `${(-zaliX * previewMultiple *  zoomLevel * zaliMultiple)  }px`,
                 top: `${(-zaliY * previewMultiple *  zoomLevel *zaliMultiple) }px`,
                 transform: `scale(${zoomLevel * zaliMultiple})`,
@@ -236,7 +273,7 @@ const AnilMagnifier:React.FC<MagnifierProps> = ({
               }}
               alt="Magnified"
             />
-        </div>
+        </div>}
     </div>
   )
 }

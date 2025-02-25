@@ -9,6 +9,7 @@ interface MagnifierProps {
     magnifierHeight?:number;
     magnifierWidth?:number;
     zoomLevel?:number;
+    // magnifyOnImage?:boolean;
 }
 const ImageMagnifier: React.FC<MagnifierProps> = ({
   src,
@@ -18,7 +19,8 @@ const ImageMagnifier: React.FC<MagnifierProps> = ({
   alt,
   magnifierHeight = 200,
   magnifierWidth = 200,
-  zoomLevel = 1.5
+  zoomLevel = 1.5,
+  // magnifyOnImage=false,
 }) => {
   const [showMagnifier, setShowMagnifier] = useState(false);
   const [[imgWidth, imgHeight], setSize] = useState([0, 0]);
