@@ -1,32 +1,83 @@
-import React from 'react'
-import AnilMagnifier from '../components/magnifier/AnilMagnifier'
-import ImageMagnifier from '../components/magnifier/BubbleMagnifier'
+import React, { useState } from 'react';
+import AnilMagnifier from '../components/magnifier/AnilMagnifier';
 
 const Magnifier = () => {
-  const defaultImage = 'https://i.redd.it/zziah8ln4ttb1.jpg'
-    // const defaultImage = "https://th.bing.com/th/id/OIP.kasbvyxrOBq5LxyycYg3fgHaIY?rs=1&pid=ImgDetMain"
-  // const defaultImage = "https://ethanselzer.github.io/react-image-magnify/static/media/wristwatch_687.8ea75ffc.jpg"
-  // const defaultImage ='https://picsum.photos/400/350' 
-  return (
-    <>
-    <ImageMagnifier
-      height={300}
-      width={300}
-      magnifierHeight={200}
-      magnifierWidth={200}
-      src={defaultImage}
-    />
-    <hr />
+    // const [image, setImage] = useState('https://picsum.photos/200/200');
+    const [image, setImage] = useState('https://i.redd.it/zziah8ln4ttb1.jpg');
+    const [width, setWidth] = useState(350);
+    const [height, setHeight] = useState(400);
+    const [previewMultiple, setPreviewMultiple] = useState(1);
+    const [zaliMultiple, setZaliMultiple] = useState(1);
 
-    <AnilMagnifier
-    image={defaultImage}
-    width={350}
-    height={400}
-    previewMultiple={1}
-    zaliMultiple={1}
-    />
-    </>
-  )
-}
+    return (
+        <div className="p-4">
+            {/* Settings Panel */}
+            <div className="p-4 bg-gray-100 rounded-md shadow-md mb-4">
+                <h2 className="text-lg font-semibold mb-2">Magnifier Settings</h2>
 
-export default Magnifier
+                <label className="block mb-2">
+                    Image URL:
+                    <input 
+                        type="text" 
+                        value={image} 
+                        onChange={(e) => setImage(e.target.value)} 
+                        className="ml-2 p-1 border rounded w-full"
+                    />
+                </label>
+
+                <label className="block mb-2">
+                    Width:
+                    <input 
+                        type="number" 
+                        value={width} 
+                        onChange={(e) => setWidth(Number(e.target.value))} 
+                        className="ml-2 p-1 border rounded"
+                    />
+                </label>
+
+                <label className="block mb-2">
+                    Height:
+                    <input 
+                        type="number" 
+                        value={height} 
+                        onChange={(e) => setHeight(Number(e.target.value))} 
+                        className="ml-2 p-1 border rounded"
+                    />
+                </label>
+
+                <label className="block mb-2">
+                    Preview Multiple:
+                    <input 
+                        type="number" 
+                        value={previewMultiple} 
+                        step="0.1"
+                        onChange={(e) => setPreviewMultiple(Number(e.target.value))} 
+                        className="ml-2 p-1 border rounded"
+                    />
+                </label>
+
+                <label className="block mb-2">
+                    Zoom Multiple:
+                    <input 
+                        type="number" 
+                        value={zaliMultiple} 
+                        step="0.1"
+                        onChange={(e) => setZaliMultiple(Number(e.target.value))} 
+                        className="ml-2 p-1 border rounded"
+                    />
+                </label>
+            </div>
+
+            {/* Magnifier Component */}
+            <AnilMagnifier
+                image={image}
+                width={width}
+                height={height}
+                previewMultiple={previewMultiple}
+                zaliMultiple={zaliMultiple}
+            />
+        </div>
+    );
+};
+
+export default Magnifier;

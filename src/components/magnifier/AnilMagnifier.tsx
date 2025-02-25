@@ -27,7 +27,7 @@ const AnilMagnifier:React.FC<MagnifierTypes> = ({
     const [[zaliHeight,zaliWidth],setZaliArea] = useState<[number,number]>([0,0]);
     const [[mouseX,mouseY],setMousePosition] = useState<[number,number]>([0,0])
     const [[leftWidth,topHeight],setVerticalHeight] = useState<[number,number]>([0,0]);
-    const [[rightWidth,bottomHeight],setHorizontalWidth] = useState<[number,number]>([0,0]);
+    const [[imgNaturalWidth,imgNaturalHeight],setImageNaturalArea] = useState<[number,number]>([0,0]);
     const imageContainerRef = useRef<HTMLDivElement | null>(null);
     const magnifiedImageRef = useRef<HTMLDivElement | null>(null);
     const imageRef = useRef<HTMLImageElement | null>(null);
@@ -63,7 +63,7 @@ const AnilMagnifier:React.FC<MagnifierTypes> = ({
         width: `${width * previewMultiple}px` ,
         zIndex:100,
         position:'absolute',
-        left:width + previewMargin,
+        left:width + previewMargin + 10,
         display:'flex',
         overflow:'hidden',
         visibility:zaliActive ? 'visible': 'hidden'
@@ -77,15 +77,34 @@ const AnilMagnifier:React.FC<MagnifierTypes> = ({
         setZaliActive(true);
         if(imageContainerRef.current && imageRef.current){
             const imageBounds = imageRef.current.getBoundingClientRect();
-            const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
+
             setZaliArea([height/ (2*zaliMultiple), width / (2*zaliMultiple)])
             setImageAxis([imageBounds.width,imageBounds.height])
-            
+            const {naturalHeight,naturalWidth} = imageRef.current;
+            setImageNaturalArea([naturalWidth,naturalHeight])
 
-            console.log('container azis',imageBounds.height,imageBounds.width)
-            // const {naturalWidth,naturalHeight} = imageRef.current
-            // setImageAxis([naturalHeight,naturalWidth])
-            // console.log("Natural height and width",naturalHeight,naturalWidth)
+            console.log('natural area',naturalHeight,naturalWidth)
+            if (imageRef.current) {
+                const imgNaturalWidth = imageRef.current.naturalWidth;
+                const imgNaturalHeight = imageRef.current.naturalHeight;
+    
+                const containerRatio = width / height;
+                const imageRatio = imgNaturalWidth / imgNaturalHeight;
+    
+                let newWidth, newHeight;
+    
+                if (imageRatio > containerRatio) {
+                    // Image is wider than the container (scale by width)
+                    newWidth = width;
+                    newHeight = (imgNaturalHeight / imgNaturalWidth) * width;
+                } else {
+                    // Image is taller than the container (scale by height)
+                    newHeight = height;
+                    newWidth = (imgNaturalWidth / imgNaturalHeight) * height;
+                }
+    
+                setImageAxis([newWidth,newHeight]);
+            }
         }
 
 
@@ -167,6 +186,7 @@ const AnilMagnifier:React.FC<MagnifierTypes> = ({
         backgroundPositionY: `${-zaliY + (height-imageHeight)/2}px`,
         }
     }
+
     
   return (
     <div className='p-2 flex flex-wrap gap-2'>
@@ -233,8 +253,16 @@ const AnilMagnifier:React.FC<MagnifierTypes> = ({
             }
             
         
-            <img src={image} className={`${width > height ? 'mx-auto' : 'my-auto'}`} style={{
-            }} alt="" ref={imageRef}/>
+            <img src={image}  style={{
+                // height:'100%',
+                margin:'auto',
+                height:imageHeight,
+                width:imageWidth,
+                // width:'100%',
+                // objectFit:'contain'
+            }} alt="Anil Wagle Components Image" 
+            
+            ref={imageRef}/>
         </div>
         {!magnifyOnImage && <div 
             className={previewClassName}

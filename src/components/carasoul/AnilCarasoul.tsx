@@ -79,7 +79,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     useEffect(()=>{
         getContainerData();
-    },[])
+    },[itemsToShow,itemToScroll,arrows,dots])
 
 
     const handleTransformMovement =()=>{
