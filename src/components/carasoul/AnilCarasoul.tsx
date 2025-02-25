@@ -11,6 +11,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     itemToScroll=1,
     dots=true,
     arrows=true,
+    infinite=0,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -42,7 +43,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const childrenArray = React.Children.toArray(children);
     const dataArray = Array.from({ length: childrenArray.length }, (_, i) => i + 1);
 
-    console.log('data array',dataArray)
+    // console.log('data array',dataArray)
     const componentLength:number = dataArray.length
     const convertedArray = [...childrenArray.slice(-itemToScroll),...childrenArray,...childrenArray.slice(0,childrenArray.length)]
     // console.log('converetd array',convertedArray)
@@ -62,6 +63,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             setTransformingWidth(screwWidth)
             setTransformWidth(screwWidth)
             console.log('Rect Width',screwWidth)
+
         }
 
 
@@ -213,11 +215,13 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     }
 
     const transformFunction =(indexArg:number)=>{
-        console.log('new active index timeout',indexArg)
+        // console.log('new active index timeout',indexArg)
 
         let conversion = (indexArg) * componentWidth
         setTransformingWidth(conversion)
         setTransformWidth(conversion)
+        setActiveIndex(indexArg)
+
     }
 
     const adjustIndex =(index:number)=>{
@@ -245,22 +249,8 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 transformFunction(newActiveIndex)
             }
 
-            setActiveIndex(newActiveIndex)
 
         },500)
-
-
-
-        // if(index == componentLength-1){
-        //     setNextBtnStatus(true);
-        // }else{
-        //     setNextBtnStatus(false);
-        // }
-        // if(index < 1){
-        //     setPrevBtnStatus(true);
-        // }else{
-        //     setPrevBtnStatus(false)
-        // }
     }
 
     // console.log('dot index',dotIndex)
@@ -311,12 +301,27 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     }
 
 
+    const autoLoopFunction =()=>{
+        setInterval(()=>{
+            // console.log('active index');
+            // handleActiveIndex(activeIndex + 1)
+        },2000)
+    }
 
     useEffect(()=>{
-
-        
-    },[])
-
+        if(infinite > 0){
+        let i = 1;
+        setInterval(()=>{
+            if (i > componentLength) {
+                i = 1; // Reset to 1 when i > componentLength
+              } else {
+                i = i + 1; // Otherwise increment
+              }
+            handleActiveIndex(i)
+        },infinite)
+        }
+    },[componentWidth,infinite])
+      
 
     // console.log('converted array',convertedArray)
   return (

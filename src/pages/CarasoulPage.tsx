@@ -8,8 +8,9 @@ const CarasoulPage = () => {
         itemToScroll: 1,
         arrows: false,
         dots: true,
+        infinite:0,
     });
-
+    const [infi,setInfi] = useState(false);
     return (
         <div>
             {/* User Controls */}
@@ -55,6 +56,19 @@ const CarasoulPage = () => {
                         className="mr-2"
                     />
                     Show Dots
+                </label>
+
+                <label className="block mb-2">
+                    <input 
+                        type="checkbox" 
+                        checked={infi} 
+                        onChange={(e) => {
+                            setInfi(e.target.checked);
+                            setSettings({ ...settings, infinite: e.target.checked ? 2000 : 0 })
+                        }} 
+                        className="mr-2"
+                    />
+                    Infinite Loop 2000s , 2s
                 </label>
             </div>
 
