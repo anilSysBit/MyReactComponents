@@ -1,27 +1,12 @@
 import { Height, TopicRounded } from '@mui/icons-material';
 import { Hidden } from '@mui/material';
 import React, { HTMLAttributes, useState,useRef } from 'react'
-import { CSSProperties } from 'styled-components';
 // import Magnifier from '../../pages/Magnifier';
+import MagnifierTypes from './MagnifierTypes';
 
 
-interface MagnifierProps{
-    image:string;
-    mainContainerStyle?:CSSProperties,
-    zoomLevel?:number;
-    zaliHeight?:number;
-    zaliWidth?:number;
-    previewMultiple?:number;
-    width?:number;
-    height?:number;
-    previewMargin?:number;
-    previewClassName?:string;
-    containerClassName?:string;
-    zaliMultiple?:number;
-    magnifyOnImage?:boolean;
-}
 
-const AnilMagnifier:React.FC<MagnifierProps> = ({
+const AnilMagnifier:React.FC<MagnifierTypes> = ({
     image,
     zoomLevel=2,
     previewMultiple=1,
