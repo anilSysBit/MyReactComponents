@@ -16,6 +16,7 @@ import ScreenLearning from './pages/ScreenLearning'
 import CarasoulPage from './pages/CarasoulPage'
 import Magnifier from './pages/Magnifier'
 import SidebarPage from './pages/SidebarPage'
+import ChatPage from './pages/ChatPage'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
    <Routes>
     <Route path='' element={<LandingPage/>} />
     <Route path='/chat' element={<ChatBox/>}/>
+    <Route path='/chat-ui' element={<ChatPage/>}/>
     <Route path='/cropper' element={<ImageCrop/>}/>
     <Route path='/screen-learning' element={<ScreenLearning/>}/>
     <Route path='/slider' element={<CarasoulPage/>}/>
