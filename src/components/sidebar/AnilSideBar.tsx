@@ -97,7 +97,7 @@ const MenuItem: React.FC<{ item: MenuItem; depth?: number }> = ({ item, depth = 
       </button>
       {hasChildren && (
         <div className={`submenu ${isOpen ? 'open' : ''} ${isAnimating ? 'animating' : ''}`}>
-          {item.children.map((child, index) => (
+          {item.children && item.children.map((child, index) => (
             <MenuItem key={index} item={child} depth={depth + 1} />
           ))}
         </div>
