@@ -15,6 +15,7 @@ import ImageCrop from './components/ImageCrop'
 import ScreenLearning from './pages/ScreenLearning'
 import CarasoulPage from './pages/CarasoulPage'
 import Magnifier from './pages/Magnifier'
+import SidebarPage from './pages/SidebarPage'
 
 function App() {
   return (
@@ -27,11 +28,13 @@ function App() {
     <Route path='/screen-learning' element={<ScreenLearning/>}/>
     <Route path='/slider' element={<CarasoulPage/>}/>
     <Route path='/magnifier' element={<Magnifier/>}/>
+    <Route path='/sidebar' element={<SidebarPage/>} />
    </Routes>
    </BrowserRouter>
 
     </>
   )
 }
+
 
 export default App

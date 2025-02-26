@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import ImageMagnifier from './ImageMagnifier';
 
 const LandingPage:React.FC = () => {
     const Header = styled.header`
@@ -33,6 +32,7 @@ const LandingPage:React.FC = () => {
                 <li className='bg-slate-200 p-2'><Link to={'/screen-learning'}>Screen Learning</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/slider'}>Custom Slick Carasoul</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/magnifier'}>New Magnifier</Link></li>
+                <li className='bg-slate-200 p-2'><Link to={'/sidebar'}>Admin Sidebar</Link></li>
             </ul>
         </div>
 

@@ -309,9 +309,10 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     }
 
     useEffect(()=>{
+        let intervalId:any;
         if(infinite > 0){
         let i = 1;
-        setInterval(()=>{
+        intervalId = setInterval(()=>{
             if (i > componentLength) {
                 i = 1; // Reset to 1 when i > componentLength
               } else {
