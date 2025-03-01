@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router';
 import styled from 'styled-components';
+import MotionDiv from '../components/motion/MotionDiv';
 
 const LandingPage:React.FC = () => {
     const Header = styled.header`
@@ -25,8 +26,9 @@ const LandingPage:React.FC = () => {
         </Header>
 
         <div className="component_list p-10">
+            <MotionDiv>
             <ul className='grid grid-cols-3 gap-2'>
-                <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat'}>Chat App with Django Websocket API</Link></li>
+                    <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat'}>Chat App with Django Websocket API</Link></li>
                 <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat-ui'}>Chat App UI</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/cropper'}>Image Cropper</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/accordin'}>Krishna Accordin</Link></li>
@@ -35,6 +37,9 @@ const LandingPage:React.FC = () => {
                 <li className='bg-slate-200 p-2'><Link to={'/magnifier'}>New Magnifier</Link></li>
                 <li className='bg-slate-200 p-2'><Link to={'/sidebar'}>Admin Sidebar</Link></li>
             </ul>
+            </MotionDiv>
+
+
         </div>
 
         {/* <ImageMagnifier imageSrc='https://picsum.photos/500/' zoomLevel={2}/> */}
