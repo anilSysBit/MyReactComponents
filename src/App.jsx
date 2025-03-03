@@ -67,7 +67,7 @@ const toggleDarkMode = () => {
    <BrowserRouter>
    <AppContainer>
 
-        <div className='flex p-2 place-content-center gap-10 bg-white dark:bg-slate-700'>
+        <div className='flex p-2 place-content-center gap-10 bg-slate-200 dark:bg-slate-700'>
         <h1 className='text-2xl font-bold text-slate-700 dark:text-slate-200'>Anil Wagle React Components</h1>
         <ThemeToggle isDark={isDarkMode} onToggle={toggleDarkMode} />
         </div>

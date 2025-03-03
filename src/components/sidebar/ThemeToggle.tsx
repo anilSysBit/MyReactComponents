@@ -11,8 +11,8 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ isDark, onToggle }) => {
     <button
       onClick={onToggle}
       className="p-2 rounded-lg transition-colors duration-200
-        dark:bg-gray-700 dark:hover:bg-gray-600
-        bg-gray-100 hover:bg-gray-200"
+        dark:bg-gray-600 dark:hover:bg-gray-900
+        bg-gray-500 hover:bg-gray-700"
     >
       {isDark ? (
         <WbSunny  className="text-yellow-400" />

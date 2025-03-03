@@ -3,24 +3,32 @@ import { Link } from 'react-router';
 import MotionDiv from '../components/utility/MotionDiv';
 
 const LandingPage:React.FC = () => {
-
+    const items = [
+        { path: '/chat', title: 'Chat App with Django Websocket API' },
+        { path: '/chat-ui', title: 'Chat App UI' },
+        { path: '/cropper', title: 'Image Cropper' },
+        { path: '/accordin', title: 'Krishna Accordin' },
+        { path: '/screen-learning', title: 'Screen Learning' },
+        { path: '/slider', title: 'Custom Slick Carousel' },
+        { path: '/magnifier', title: 'New Magnifier' },
+        { path: '/sidebar', title: 'Admin Sidebar' }
+      ];
   return (
     
 
-        <MotionDiv>
-            <div className="component_list p-10">
-            <ul className='grid grid-cols-3 gap-2'>
-                <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat'}>Chat App with Django Websocket API</Link></li>
-                <li className='bg-slate-200 p-2 min-h-20'><Link to={'/chat-ui'}>Chat App UI</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/cropper'}>Image Cropper</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/accordin'}>Krishna Accordin</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/screen-learning'}>Screen Learning</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/slider'}>Custom Slick Carasoul</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/magnifier'}>New Magnifier</Link></li>
-                <li className='bg-slate-200 p-2'><Link to={'/sidebar'}>Admin Sidebar</Link></li>
-            </ul>
-        </div>
-        </MotionDiv>
+<MotionDiv>
+  <div className="component_list p-10">
+    <ul className="grid grid-cols-3 gap-2">
+      {items.map((item, index) => (
+        <li key={index} className="bg-slate-200 dark:bg-slate-700 p-4 min-h-20 rounded-lg shadow-md">
+          <Link className="text-slate-700 dark:text-slate-200" to={item.path}>
+            {item.title}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
+</MotionDiv>
   )
 }
 
