@@ -1,72 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import ThemeToggle from './ThemeToggle';
 import { ExpandMore as ChevronDown , Home, People as Users, Settings, Inventory as Box, ShoppingCart, Description as FileText, Notifications as Bell, BarChart as BarChart2, LaptopMac as Laptop } from "@mui/icons-material";
 import './sidebar.css'
-interface MenuItem {
-  title: string;
-  icon: React.ReactNode;
-  children?: MenuItem[];
+import { MenuItemType } from './types';
+
+interface MenuItemProps{
+  children:React.ReactNode,
+  className?: React.HTMLProps<HTMLElement>['className'];
+  customStyling?:boolean;
+  header:React.ReactNode,
+  menuItems:MenuItemType[],
+  isDark?:boolean;
 }
-
-const menuItems: MenuItem[] = [
-  {
-    title: 'Dashboard',
-    icon: <Home  />,
-  },
-  {
-    title: 'User Management',
-    icon: <Users />,
-    children: [
-      { title: 'All Users', icon: <Users  /> },
-      { title: 'Roles', icon: <Users  /> },
-      { title: 'Permissions', icon: <Users  /> },
-    ],
-  },
-  {
-    title: 'Products',
-    icon: <Box  />,
-    children: [
-      { title: 'All Products', icon: <Box /> },
-      { 
-        title: 'Categories', 
-        icon: <Box />,
-        children: [
-          { title: 'Electronics', icon: <Laptop /> },
-          { title: 'Clothing', icon: <Box  /> },
-          { title: 'Food', icon: <Box /> },
-        ]
-      },
-      { title: 'Inventory', icon: <Box /> },
-    ],
-  },
-  {
-    title: 'Orders',
-    icon: <ShoppingCart  />,
-    children: [
-      { title: 'All Orders', icon: <ShoppingCart  /> },
-      { title: 'Pending', icon: <ShoppingCart  /> },
-      { title: 'Completed', icon: <ShoppingCart  /> },
-    ],
-  },
-  {
-    title: 'Reports',
-    icon: <FileText  />,
-    children: [
-      { title: 'Sales Report', icon: <BarChart2 /> },
-      { title: 'User Report', icon: <BarChart2  /> },
-    ],
-  },
-  {
-    title: 'Notifications',
-    icon: <Bell  />,
-  },
-  {
-    title: 'Settings',
-    icon: <Settings  />,
-  },
-];
-
-const MenuItem: React.FC<{ item: MenuItem; depth?: number }> = ({ item, depth = 0 }) => {
+const MenuItem: React.FC<{ item: MenuItemType; depth?: number }> = ({ item, depth = 0 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
@@ -106,18 +51,31 @@ const MenuItem: React.FC<{ item: MenuItem; depth?: number }> = ({ item, depth = 
   );
 };
 
-const AnilSideBar: React.FC<{ isDark: boolean; onToggleTheme: () => void }> = ({ isDark, onToggleTheme }) => {
+
+
+const AnilSideBar: React.FC<MenuItemProps> = ({children,customStyling=false,className,header,menuItems }) => {
+  const defaultStyling =()=>{
+    if(!customStyling){
+      return{
+        display:'flex'
+      }
+    }else{
+      return{}
+    }
+  }
   return (
-    <div className="sidebar">
+    <div className={className} style={defaultStyling()}>
+      <div className="sidebar">
       <div className="sidebar-header">
-        <h1>Anil Components</h1>
-        <ThemeToggle isDark={isDark} onToggle={onToggleTheme} />
+        {header}
       </div>
       <nav className="menu">
         {menuItems.map((item, index) => (
           <MenuItem key={index} item={item} />
         ))}
       </nav>
+    </div>
+    {children}
     </div>
   );
 };

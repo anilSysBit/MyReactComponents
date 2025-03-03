@@ -16,11 +16,11 @@
     margin-bottom: 2rem;
   }
   
-  .sidebar-header h1 {
+  /* .sidebar-header h1 {
     font-size: 1.25rem;
     font-weight: bold;
     color: #1f2937;
-  }
+  } */
   
   .sidebar-header .MuiSvgIcon-root {
     color: #1f2937;
@@ -95,68 +95,24 @@
     font-size: 0.875rem;
   }
   
-  /* Dark theme adjustments */
-  body[data-theme='dark'] .sidebar {
-    background-color: #1f2937;
-    border-color: #374151;
-  }
-  
-  body[data-theme='dark'] .menu-item {
-    color: #d1d5db;
-  }
-  
-  body[data-theme='dark'] .menu-item:hover {
-    background-color: #4b5563;
-  }
-  
-  body[data-theme='dark'] .menu-item.open {
-    background-color: #4b5563;
-  }
-  
-  body[data-theme='dark'] .submenu {
-    background-color: #374151;
-  }
-  
+/* Dark theme adjustments */
+html.dark .sidebar {
+  background-color: #1f2937;
+  border-color: #374151;
+}
 
+html.dark .menu-item {
+  color: #d1d5db;
+}
 
+html.dark .menu-item:hover {
+  background-color: #4b5563;
+}
 
-  /* Page layout and styles */
-.page-container {
-    display: flex;
-  }
-  
-  /* Content area */
-  .content-area {
-    flex: 1;
-    padding: 2rem;
-    transition: background-color 0.2s ease;
-  }
-  
-  .content-area.dark {
-    background-color: #1f2937; /* Dark background */
-  }
-  
-  .content-area.light {
-    background-color: #f9fafb; /* Light background */
-  }
-  
-  /* Header styles */
-  .page-header {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1f2937; /* Default text color */
-  }
-  
-  .page-header.dark {
-    color: white; /* Dark theme text */
-  }
-  
-  .page-subtext {
-    margin-top: 0.5rem;
-    color: #4b5563; /* Default subtext color */
-  }
-  
-  .page-subtext.dark {
-    color: #d1d5db; /* Dark theme subtext color */
-  }
-  
+html.dark .menu-item.open {
+  background-color: #4b5563;
+}
+
+html.dark .submenu {
+  background-color: #374151;
+}
