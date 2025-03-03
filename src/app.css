@@ -3,7 +3,9 @@
 
 body{
     user-select: none;
+    background-color: #f7f9fb;
 }
+
 .scale_line{
     width: 2px;
     height: 5px;

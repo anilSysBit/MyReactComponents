@@ -4,7 +4,7 @@ import SliderBox from './components/ThumbnailAccordin'
 import Chatbox from './components/ChatBox'
 import BaseChatBox from './components/BaseChatBox'
 import ChatBox from './components/PlatformChat/ChatBox'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Link, Route, Routes } from 'react-router'
 import LandingPage from './pages/LandingPage'
 import ImageCrop from './components/ImageCrop'
 import ScreenLearning from './pages/ScreenLearning'
@@ -65,13 +65,17 @@ const toggleDarkMode = () => {
   return (
     <>
    <BrowserRouter>
-   <AppContainer>
-
-        <div className='flex p-2 place-content-center gap-10 bg-slate-200 dark:bg-slate-700'>
-        <h1 className='text-2xl font-bold text-slate-700 dark:text-slate-200'>Anil Wagle React Components</h1>
+   <div className='flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200'>
+   <header className='sticky top-0 w-full z-50 transition-all duration-300 bg-white dark:bg-gray-700 shadow-md py-0'>
+   <div className='flex p-3 place-content-center justify-between'>
+        <h1 className='text-2xl font-bold text-slate-700 dark:text-slate-200'>
+          <Link to={"/"}>Anil Components</Link>
+        </h1>
         <ThemeToggle isDark={isDarkMode} onToggle={toggleDarkMode} />
         </div>
-        <Routes>
+   </header>
+   <main className='flex-grow mt-1'>
+    <Routes>
     <Route path='' element={<LandingPage/>} />
     <Route path='/chat' element={<ChatBox/>}/>
     <Route path='/chat-ui' element={<ChatPage/>}/>
@@ -81,7 +85,9 @@ const toggleDarkMode = () => {
     <Route path='/magnifier' element={<Magnifier/>}/>
     <Route path='/sidebar' element={<SidebarPage/>} />
    </Routes>
-    </AppContainer>
+   </main>
+    </div>
+
    </BrowserRouter>
 
     </>
