@@ -17,7 +17,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ isDark, onToggle }) => {
       {isDark ? (
         <WbSunny  className="text-yellow-400" />
       ) : (
-        <DarkMode className="text-gray-600" />
+        <DarkMode className="text-white" />
       )}
     </button>
   );

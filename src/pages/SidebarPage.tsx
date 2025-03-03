@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AnilSideBar from '../components/sidebar/AnilSideBar';
-import '../components/sidebar/sidebar.css'
 import MaterialSideBar from '../components/sidebar/MaterialSidebar';
 import { MenuItemType } from '../components/sidebar/types';
 import { ExpandMore as ChevronDown , Home, People as Users, Settings, Inventory as Box, ShoppingCart, Description as FileText, Notifications as Bell, BarChart as BarChart2, LaptopMac as Laptop } from "@mui/icons-material";
 import ThemeToggle from '../components/sidebar/ThemeToggle';
 function SideBarPage() {
-  const [isDark, setIsDark] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  });
 
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.className = 'dark'; // Update className directly
-      // document.body.setAttribute('data-theme','dark')
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.className = 'light'; // Update className directly
-      // document.body.setAttribute('data-theme','light')
-
-      localStorage.setItem('theme', 'light');
-    }
-  }, [isDark]);
 
   const menuItems: MenuItemType[] = [
     {
@@ -84,15 +67,16 @@ function SideBarPage() {
   
   const SideBarHeader =()=>{
     return(
-    <div className='flex justify-between w-full'>
-        <h1 className='text-black font-bold text-xl dark:text-white'>Anil components</h1>
-        <ThemeToggle isDark={isDark} onToggle={() => setIsDark(!isDark)} />
+    <div className='flex justify-between w-full p-2'>
+      <h1 className='text-black dark:text-white font-bold text-xl'>
+        Anil components
+      </h1>
       </div>
     )
   }
   return (
     <div className="flex">
-      <AnilSideBar  className='flex' customStyling header={<SideBarHeader/>} menuItems={menuItems} isDark={isDark}>
+      <AnilSideBar  className='flex' customStyling header={<SideBarHeader/>} menuItems={menuItems}>
         <div className="another-container p-2">
           <h1 className='text-black text-2xl'>Example of React  Sidebar components</h1>
         </div>
