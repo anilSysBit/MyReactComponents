@@ -15,6 +15,7 @@ import ChatPage from './pages/ChatPage'
 import styled from 'styled-components';
 import ThemeToggle from './components/sidebar/ThemeToggle'
 
+
 function App() {
   const Header = styled.header`
   background-color: #282c34;
