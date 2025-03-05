@@ -14,6 +14,8 @@ import SidebarPage from './pages/SidebarPage'
 import ChatPage from './pages/ChatPage'
 import styled from 'styled-components';
 import ThemeToggle from './components/sidebar/ThemeToggle'
+import { ImageFileHandler } from './components/forms/fileHandler/ImageFileHandler'
+import FileUploadPage from './pages/file/FileUploadPage'
 
 
 function App() {
@@ -85,6 +87,7 @@ const toggleDarkMode = () => {
     <Route path='/slider' element={<CarasoulPage/>}/>
     <Route path='/magnifier' element={<Magnifier/>}/>
     <Route path='/sidebar' element={<SidebarPage/>} />
+    <Route path='/filehandler' element={<FileUploadPage/>} />
    </Routes>
    </main>
     </div>

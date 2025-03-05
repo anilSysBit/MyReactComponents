@@ -11,7 +11,8 @@ const LandingPage:React.FC = () => {
         { path: '/screen-learning', title: 'Screen Learning' },
         { path: '/slider', title: 'Custom Slick Carousel' },
         { path: '/magnifier', title: 'New Magnifier' },
-        { path: '/sidebar', title: 'Admin Sidebar' }
+        { path: '/sidebar', title: 'Admin Sidebar' },
+        { path: '/filehandler', title: 'Image File Handler' }
       ];
   return (
     
