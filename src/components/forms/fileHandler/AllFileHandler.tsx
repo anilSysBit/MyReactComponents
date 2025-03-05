@@ -132,7 +132,7 @@ export function FileHandler({
       handleFiles(Array.from(e.target.files));
     }
   }, [handleFiles]);
-
+  
   const removeFile = useCallback((fileId: string) => {
     setFiles(prevFiles => {
       const fileToRemove = prevFiles.find(f => f.id === fileId);
