@@ -8,9 +8,8 @@ import {
     InsertDriveFile as FileIcon, 
     Article as FileTypeIcon 
   } from '@mui/icons-material';
-  
-import { FileWithPreview, FileHandlerProps, FileType, FILE_TYPE_MAP } from './types';
-  
+import { FileWithPreview, FileHandlerProps, FileType,FILE_TYPE_MAP } from './types';
+
 const getFileType = (mimeType: string): FileType => {
   return FILE_TYPE_MAP[mimeType] || 'other';
 };
@@ -30,7 +29,7 @@ const FilePreviewIcon = ({ type, className }: { type: FileType; className?: stri
   }
 };
 
-export function AllFileHandler({
+export function FileHandler({
   onFileSelect,
   maxSizeMB = 10,
   acceptedTypes = [
@@ -45,73 +44,110 @@ export function AllFileHandler({
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   ],
   className = '',
-}: FileHandlerProps) {
-  const [file, setFile] = useState<FileWithPreview | null>(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  isMulti = false,
+  maxFiles = 10,
+}: FileHandlerProps) {  
+  const [files, setFiles] = useState<FileWithPreview[]>([]);
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFile = useCallback((selectedFile: File) => {
-    setError(null);
-
+  const processFile = useCallback((file: File): FileWithPreview | null => {
     // Validate file type
-    if (!acceptedTypes.includes(selectedFile.type)) {
+    if (!acceptedTypes.includes(file.type)) {
       setError('Invalid file type. Please upload a supported file.');
-      return;
+      return null;
     }
 
     // Validate file size
-    if (selectedFile.size > maxSizeMB * 1024 * 1024) {
+    if (file.size > maxSizeMB * 1024 * 1024) {
       setError(`File size must be less than ${maxSizeMB}MB`);
-      return;
+      return null;
     }
 
     // Create preview for images only
-    const fileWithPreview = Object.assign(selectedFile, {
-      preview: selectedFile.type.startsWith('image/') 
-        ? URL.createObjectURL(selectedFile)
+    const fileWithPreview = Object.assign(file, {
+      preview: file.type.startsWith('image/') 
+        ? URL.createObjectURL(file)
         : undefined,
+      id: crypto.randomUUID(),
     });
 
-    setFile(fileWithPreview);
-    onFileSelect?.(fileWithPreview);
+    return fileWithPreview;
+  }, [maxSizeMB, acceptedTypes]);
 
-    // Simulate upload progress
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += 10;
-      setUploadProgress(progress);
-      if (progress >= 100) {
-        clearInterval(interval);
-      }
-    }, 100);
-  }, [maxSizeMB, acceptedTypes, onFileSelect]);
+  const handleFiles = useCallback((newFiles: File[]) => {
+    setError(null);
+
+    if (!isMulti && newFiles.length > 1) {
+      setError('Only one file can be uploaded at a time');
+      return;
+    }
+
+    if (isMulti && files.length + newFiles.length > maxFiles) {
+      setError(`Maximum ${maxFiles} files allowed`);
+      return;
+    }
+
+    const processedFiles = newFiles
+      .map(processFile)
+      .filter((f): f is FileWithPreview => f !== null);
+
+    if (processedFiles.length === 0) return;
+
+    const updatedFiles = isMulti 
+      ? [...files, ...processedFiles]
+      : processedFiles;
+
+    setFiles(updatedFiles);
+    onFileSelect?.(updatedFiles);
+
+    // Simulate upload progress for each file
+    processedFiles.forEach(file => {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 10;
+        setUploadProgress(prev => ({
+          ...prev,
+          [file.id]: progress
+        }));
+        if (progress >= 100) {
+          clearInterval(interval);
+        }
+      }, 100);
+    });
+  }, [files, isMulti, maxFiles, processFile, onFileSelect]);
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     
     if (e.dataTransfer.files?.length) {
-      handleFile(e.dataTransfer.files[0]);
+      handleFiles(Array.from(e.dataTransfer.files));
     }
-  }, [handleFile]);
+  }, [handleFiles]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
-      handleFile(e.target.files[0]);
+      handleFiles(Array.from(e.target.files));
     }
-  }, [handleFile]);
+  }, [handleFiles]);
 
-  const removeFile = useCallback(() => {
-    if (file?.preview) {
-      URL.revokeObjectURL(file.preview);
-    }
-    setFile(null);
-    setUploadProgress(0);
-    onFileSelect?.(null);
-  }, [file, onFileSelect]);
-
-  const fileType = file ? getFileType(file.type) : null;
+  const removeFile = useCallback((fileId: string) => {
+    setFiles(prevFiles => {
+      const fileToRemove = prevFiles.find(f => f.id === fileId);
+      if (fileToRemove?.preview) {
+        URL.revokeObjectURL(fileToRemove.preview);
+      }
+      const updatedFiles = prevFiles.filter(f => f.id !== fileId);
+      onFileSelect?.(updatedFiles.length > 0 ? updatedFiles : null);
+      return updatedFiles;
+    });
+    setUploadProgress(prev => {
+      const { [fileId]: _, ...rest } = prev;
+      return rest;
+    });
+  }, [onFileSelect]);
 
   return (
     <div className={`w-full ${className}`}>
@@ -126,11 +162,13 @@ export function AllFileHandler({
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
       >
-        {!file ? (
+        {files.length === 0 ? (
           <div className="flex flex-col items-center justify-center space-y-2">
             <Upload className="w-12 h-12 text-gray-400" />
             <div className="text-center">
-              <p className="text-gray-600">Drag and drop your file here, or</p>
+              <p className="text-gray-600">
+                Drag and drop your file{isMulti ? 's' : ''} here, or
+              </p>
               <label className="cursor-pointer text-blue-500 hover:text-blue-600">
                 browse
                 <input
@@ -138,52 +176,83 @@ export function AllFileHandler({
                   className="hidden"
                   accept={acceptedTypes.join(',')}
                   onChange={handleChange}
+                  multiple={isMulti}
                 />
               </label>
             </div>
             <p className="text-sm text-gray-500">
               Maximum file size: {maxSizeMB}MB
             </p>
+            {isMulti && (
+              <p className="text-sm text-gray-500">
+                Maximum files: {maxFiles}
+              </p>
+            )}
             <p className="text-sm text-gray-500">
               Supported files: Images, PDF, Excel, Word
             </p>
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-100">
-              {fileType === 'image' && file.preview ? (
-                <img
-                  src={file.preview}
-                  alt="Preview"
-                  className="h-full w-full object-contain"
-                />
-              ) : (
-                <div className="flex h-full flex-col items-center justify-center gap-4">
-                  <FilePreviewIcon type={fileType || 'other'} className="h-16 w-16 text-gray-400" />
-                  <p className="text-sm font-medium text-gray-600">{file.name}</p>
-                </div>
-              )}
-              <button
-                onClick={removeFile}
-                className="absolute right-2 top-2 rounded-full bg-gray-900/50 p-1 text-white hover:bg-gray-900/75"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            {uploadProgress < 100 && (
-              <div className="w-full">
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>Uploading...</span>
-                  <span>{uploadProgress}%</span>
-                </div>
-                <div className="mt-1 h-2 w-full rounded-full bg-gray-200">
-                  <div
-                    className="h-full rounded-full bg-blue-500 transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {files.map(file => {
+                const fileType = getFileType(file.type);
+                return (
+                  <div 
+                    key={file.id}
+                    className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100 p-2"
+                  >
+                    {fileType === 'image' && file.preview ? (
+                      <img
+                        src={file.preview}
+                        alt="Preview"
+                        className="h-full w-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div className="flex h-full flex-col items-center justify-center gap-2">
+                        <FilePreviewIcon type={fileType} className="h-12 w-12 text-gray-400" />
+                        <p className="text-xs font-medium text-gray-600 text-center line-clamp-2">
+                          {file.name}
+                        </p>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => removeFile(file.id)}
+                      className="absolute right-1 top-1 rounded-full bg-gray-900/50 p-1 text-white hover:bg-gray-900/75"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    {uploadProgress[file.id] < 100 && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-white/90 p-2">
+                        <div className="h-1 w-full rounded-full bg-gray-200">
+                          <div
+                            className="h-full rounded-full bg-blue-500 transition-all duration-300"
+                            style={{ width: `${uploadProgress[file.id]}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              {isMulti && files.length < maxFiles && (
+                <label className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100 p-2 cursor-pointer hover:bg-gray-200 transition-colors">
+                  <div className="flex h-full flex-col items-center justify-center gap-2">
+                    <Upload className="h-12 w-12 text-gray-400" />
+                    <p className="text-xs font-medium text-gray-600 text-center">
+                      Add more files
+                    </p>
+                  </div>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept={acceptedTypes.join(',')}
+                    onChange={handleChange}
+                    multiple={isMulti}
                   />
-                </div>
-              </div>
-            )}
+                </label>
+              )}
+            </div>
           </div>
         )}
         {error && (

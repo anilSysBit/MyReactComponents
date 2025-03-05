@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 // import { X, Upload, Image as ImageIcon } from 'lucide-react';
 import { Close as X, CloudUpload as Upload, Image as ImageIcon } from '@mui/icons-material';
 
-import type { FileWithPreview, ImageFileHandlerProps } from './types';
+import { FileWithImagePreview, ImageFileHandlerProps } from './types';
 
 export function ImageFileHandler({
   onFileSelect,
@@ -10,7 +10,7 @@ export function ImageFileHandler({
   acceptedTypes = ['image/jpeg', 'image/png', 'image/webp'],
   className = '',
 }: ImageFileHandlerProps) {
-  const [file, setFile] = useState<FileWithPreview | null>(null);
+  const [file, setFile] = useState<FileWithImagePreview | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);

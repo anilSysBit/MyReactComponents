@@ -1,6 +1,6 @@
-export interface FileWithPreview extends File {
-    preview?: string;
-  }
+export interface FileWithImagePreview extends File {
+  preview?: string;
+}
   
   export interface ImageFileHandlerProps {
     onFileSelect?: (file: FileWithPreview | null) => void;
@@ -11,15 +11,18 @@ export interface FileWithPreview extends File {
 
   export interface FileWithPreview extends File {
     preview?: string;
+    id: string; // Unique identifier for each file
   }
   
   export type FileType = 'image' | 'pdf' | 'excel' | 'word' | 'other';
   
   export interface FileHandlerProps {
-    onFileSelect?: (file: FileWithPreview | null) => void;
+    onFileSelect?: (files: FileWithPreview[] | null) => void;
     maxSizeMB?: number;
     acceptedTypes?: string[];
     className?: string;
+    isMulti?: boolean;
+    maxFiles?: number;
   }
   
   export const FILE_TYPE_MAP: Record<string, FileType> = {
