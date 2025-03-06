@@ -12,6 +12,10 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     dots=true,
     arrows=true,
     infinite=0,
+    slideBoxClassName,
+    boxParentClassName,
+    scrollDuration=500,
+    gapBetweenBox=0,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +60,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             const rect = sliderContainerRef.current.getBoundingClientRect();
             const rectWidth = rect.width
             setContainerWidth(rectWidth);
-            let screwWidth = (rectWidth / itemsToShow) * itemToScroll;
+            let screwWidth = ((rectWidth / itemsToShow) * itemToScroll);
             setScrollWidth(screwWidth)
 
             setComponentWidth(screwWidth);
@@ -75,9 +79,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     // console.log('container width',containerWidth)
 
-    window.addEventListener('resize',()=>{
-        getContainerData();
-    })
+    // window.addEventListener('resize',()=>{
+    //     getContainerData();
+    // })
 
     useEffect(()=>{
         getContainerData();
@@ -239,18 +243,21 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         let newActiveIndex = index;
         transformFunction(newActiveIndex);
         setTimeout(()=>{
-            setActiveTransform(false);
+            // setActiveTransform(false);
             // reversing the scroll option
             if(index==0){
+            setActiveTransform(false);
                 newActiveIndex = Math.round(componentLength / itemToScroll)
                 transformFunction(newActiveIndex)
             }else if(index == Math.round(componentLength / itemToScroll) + 1){
+            setActiveTransform(false);
+
                 newActiveIndex = index - (componentLength / itemToScroll)
                 transformFunction(newActiveIndex)
             }
 
 
-        },500)
+        },scrollDuration)
     }
 
     // console.log('dot index',dotIndex)
@@ -267,7 +274,8 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         cursor:cursorType,
         width:`${containerWidth * convertedLength}px`,
         transform:`translate3d(-${transformingWidth}px,0px,0px)`,
-        transition:activeTransform ? '-webkit-transform 500ms':'',
+        transition:activeTransform ? `-webkit-transform ${scrollDuration}ms`:'',
+        gap:`${gapBetweenBox}px`
     }
 
 
@@ -342,14 +350,14 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             onTouchMove={handleMouseMove}
             >
             <div 
-                className={`carasoul_container h-[30vh] flex`}
+                className={`carasoul_container flex ${boxParentClassName}`}
                 ref={sliderComponentRef}
                 style={sliderComponentStyle}
                 >
                 
                 {convertedArray.map((child,index)=>{
                     return(
-                        <div key={index} data-index={index-itemsToShow} className={`p-2 border-slate-600 h-full`} style={{width:`${containerWidth/itemsToShow}px`}}>
+                        <div key={index} data-index={index-itemsToShow} className={`slide-box ${slideBoxClassName}`} style={{width:`${containerWidth/itemsToShow}px`}}>
                             {child}
                         </div>
                     )
@@ -372,8 +380,8 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 <KeyboardArrowRight/>
         </button>
         </>}
-        {dots && <div className="dots flex gap-2 place-content-center place-items-center p-2">
-            {Array.from({length:Math.floor(componentLength/itemToScroll)}).map((_,index2)=>(
+        {dots && <div className="dots flex  gap-2 place-content-center place-items-center p-2">
+            {Array.from({length:Math.ceil(componentLength/itemToScroll)}).map((_,index2)=>(
                 <span key={index2} onClick={()=>handleDotClick(index2+1)} className={`h-3 w-3 rounded-full cursor-pointer ${activeIndex == index2+1 ?  'bg-slate-500' : 'bg-slate-200'}`}></span>
             ))}
         </div>}

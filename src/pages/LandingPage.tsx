@@ -12,7 +12,7 @@ const LandingPage:React.FC = () => {
         { path: '/slider', title: 'Custom Slick Carousel' },
         { path: '/magnifier', title: 'New Magnifier' },
         { path: '/sidebar', title: 'Admin Sidebar' },
-        { path: '/filehandler', title: 'Image File Handler' }
+        { path: '/filehandler', title: 'File Handler' }
       ];
   return (
     

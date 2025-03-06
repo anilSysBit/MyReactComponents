@@ -3,7 +3,6 @@ import type { FileWithImagePreview, FileWithPreview } from '../../components/for
 import { ImageFileHandler } from '../../components/forms/fileHandler/ImageFileHandler';
 import { FileHandler } from '../../components/forms/fileHandler/AllFileHandler';
 function FileUploadPage() {
-  const [selectedFile, setSelectedFile] = useState<FileWithImagePreview | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<FileWithPreview[] | null>(null);
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -14,10 +13,9 @@ function FileUploadPage() {
         <div className="mt-10 rounded-xl bg-white p-6 shadow-lg">
         <FileHandler
             onFileSelect={setSelectedFiles}
-            acceptedTypes={['image/jpeg']}
             maxSizeMB={10}
             isMulti={true}
-            maxFiles={6}
+            maxFiles={5}
           />
            {selectedFiles && selectedFiles.length > 0 && (
             <div className="mt-4 rounded-lg bg-gray-50 p-4">

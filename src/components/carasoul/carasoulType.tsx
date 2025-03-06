@@ -16,7 +16,11 @@ interface CarasoulProps{
     dots?:boolean;
     arrows?:boolean;
     centerMode?:boolean;
-    infinite?:number; 
+    scrollDuration?:number;
+    infinite?:number;
+    slideBoxClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+    boxParentClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+    gapBetweenBox?:number;
     
 }
 

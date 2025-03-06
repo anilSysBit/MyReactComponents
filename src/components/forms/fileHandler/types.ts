@@ -23,7 +23,7 @@ export interface FileWithImagePreview extends File {
     className?: string;
     isMulti?: boolean;
     maxFiles?: number;
-  }
+  } 
   
   export const FILE_TYPE_MAP: Record<string, FileType> = {
     'image/jpeg': 'image',
