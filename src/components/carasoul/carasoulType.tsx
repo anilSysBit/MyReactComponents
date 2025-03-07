@@ -9,19 +9,50 @@
  * @param {number} [infinite] - if set more then 1 calcuates the data on milisecons and runs the infinite loop
  */
 
-interface CarasoulProps{
+export interface slickStylesType {
+    parentBox?: React.CSSProperties;
+    slickContainer?: React.CSSProperties;
+    sliderComponent?:React.CSSProperties;
+    slideBox?:React.CSSProperties;
+    arrow?: {
+      prevArrow?: React.CSSProperties;
+      nextArrow?: React.CSSProperties;
+    };
+    dots?: {
+        parent:React.CSSProperties;
+        dot:React.CSSProperties;
+    }
+  }
+
+export interface cssClassesType{
+    parentBox?: React.ComponentPropsWithoutRef<'div'>['className'];
+    slickContainer?: React.ComponentPropsWithoutRef<'div'>['className'];
+    sliderComponent?:React.ComponentPropsWithoutRef<'div'>['className'];
+    slideBox?:React.ComponentPropsWithoutRef<'div'>['className'];
+    arrow?: {
+      prevArrow?: React.ComponentPropsWithoutRef<'button'>['className'];
+      nextArrow?: React.ComponentPropsWithoutRef<'button'>['className'];
+    };
+    dots?: {
+        parent:React.ComponentPropsWithoutRef<'div'>['className'];
+        dot:React.ComponentPropsWithoutRef<'span'>['className'];
+    }
+}
+
+export interface CarasoulProps{
     children?:React.ReactNode;
     itemsToShow?:number;
     itemToScroll?:number;
     dots?:boolean;
+    style?:slickStylesType;
     arrows?:boolean;
     centerMode?:boolean;
     scrollDuration?:number;
     infinite?:number;
-    slideBoxClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
-    boxParentClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+
     gapBetweenBox?:number;
+    cssClasses?:cssClassesType;
     
 }
 
-export default CarasoulProps
+// export default CarasoulProps

@@ -7,7 +7,7 @@ const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
         itemsToShow: 3,
         itemToScroll: 1,
-        arrows: false,
+        arrows: true,
         dots: true,
         infinite:0,
         scrollDuration:800,
@@ -142,9 +142,9 @@ const CarasoulPage = () => {
                 <h2>A Real Life Example Project list</h2>
 
                 <AnilCarasoul {...settings}
-                    slideBoxClassName='mb-10'
-                    // boxParentClassName='gap-10'
-                    gapBetweenBox={10}
+                    slideBoxClassName='mb-10 p-2'
+                    boxParentClassName=''
+                    // gapBetweenBox={10}
                 >
                 {projects.map((project, index) => (
                 <ProjectCard {...project}

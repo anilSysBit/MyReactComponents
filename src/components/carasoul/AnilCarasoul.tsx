@@ -2,8 +2,9 @@ import { ArrowRight, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-ma
 import { convertLength } from '@mui/material/styles/cssUtils';
 import React, { useEffect, useRef, useState } from 'react'
 import { G } from 'react-router/dist/development/fog-of-war-CCAcUMgB';
-
-import CarasoulProps from './carasoulType';
+import './slider.css';
+// import CarasoulProps from './carasoulType';
+import type { CarasoulProps, cssClassesType, slickStylesType } from './carasoulType';
 
 const AnilCarasoul:React.FC<CarasoulProps> = ({
     children,
@@ -12,10 +13,22 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     dots=true,
     arrows=true,
     infinite=0,
-    slideBoxClassName,
-    boxParentClassName,
     scrollDuration=500,
     gapBetweenBox=0,
+    style,
+    cssClasses={
+        // parentBox:'slickContainer p-2 relative',
+        // slickContainer:"carasoul-main-container overflow-hidden transition-transform",
+        // sliderComponent:`carasoul_container flex`,
+        // arrow:{
+        //     prevArrow:`prev_btn absolute top-1/3 rounded-full h-10 w-10 bg-slate-300 cursor-pointer`,
+        //     nextArrow:`next_btn absolute top-1/3 right-0 rounded-full h-10 w-10 bg-slate-300 cursor-pointer hover:shadow shadow-slate-600`
+        // }
+        // dots:{
+        //     parent:"dots flex  gap-2 place-content-center place-items-center p-2",
+        //     dot:`h-3 w-3 rounded-full cursor-pointer bg-slate-200`
+        // }
+    },
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -271,11 +284,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
 
     const sliderComponentStyle:React.CSSProperties = {
-        cursor:cursorType,
-        width:`${containerWidth * convertedLength}px`,
-        transform:`translate3d(-${transformingWidth}px,0px,0px)`,
-        transition:activeTransform ? `-webkit-transform ${scrollDuration}ms`:'',
-        gap:`${gapBetweenBox}px`
+
     }
 
 
@@ -330,14 +339,31 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         },infinite)
         }
     },[componentWidth,infinite])
-      
+    
 
+
+    const defaultStyle:slickStylesType = {
+        sliderComponent:{
+            display:'flex',
+            cursor:cursorType,
+            width:`${containerWidth * convertedLength}px`,
+            transform:`translate3d(-${transformingWidth}px,0px,0px)`,
+            transition:activeTransform ? `-webkit-transform ${scrollDuration}ms`:'',
+        },
+        slideBox:{
+            width:`${containerWidth/itemsToShow}px`,
+        },
+
+
+    }
+    
     // console.log('converted array',convertedArray)
   return (
-    <div className='p-2'>
-    <div className="carasoul_page relative">
+    <div className={`parent-box ${cssClasses?.parentBox}`} c-name="slick-parent-container" style={style?.parentBox}>
+    
         <div 
-            className="carasoul-main-container overflow-hidden transition-transform" 
+            className={`slick-container ${cssClasses?.slickContainer}`}
+            style={{...defaultStyle.slickContainer,...style?.slickContainer}}
             ref={sliderContainerRef} 
             onDragStart={handleDragStart}
             onMouseMove={handleMouseMove} 
@@ -350,14 +376,14 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             onTouchMove={handleMouseMove}
             >
             <div 
-                className={`carasoul_container flex ${boxParentClassName}`}
+                className={`slider-component ${cssClasses?.sliderComponent}`}
                 ref={sliderComponentRef}
-                style={sliderComponentStyle}
+                style={{...defaultStyle?.sliderComponent , ...style?.sliderComponent}}
                 >
                 
                 {convertedArray.map((child,index)=>{
                     return(
-                        <div key={index} data-index={index-itemsToShow} className={`slide-box ${slideBoxClassName}`} style={{width:`${containerWidth/itemsToShow}px`}}>
+                        <div key={index} data-index={index-itemsToShow} className={`slide-box ${cssClasses?.slideBox}`} style={{...defaultStyle?.slideBox , ...style?.slideBox}}>
                             {child}
                         </div>
                     )
@@ -369,23 +395,24 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         <>
         <button 
             onClick={handlePrevClick} 
-            disabled={prevBtnStatus} 
-            className={`prev_btn absolute top-1/3 rounded-full h-10 w-10 bg-slate-300 cursor-pointer ${prevBtnStatus && 'opacity-70'}`}>
+            disabled={prevBtnStatus}
+            style={style?.arrow?.prevArrow}
+            className={`arrow prev-btn ${cssClasses?.arrow?.prevArrow}`}>
             <KeyboardArrowLeft/>
         </button>
         <button 
             onClick={handleNextClick} 
-            disabled={nextBtnStatus} 
-            className={`next_btn absolute top-1/3 right-0 rounded-full h-10 w-10 bg-slate-300 cursor-pointer hover:shadow shadow-slate-600 ${nextBtnStatus && 'opacity-70'}`}>
+            disabled={nextBtnStatus}
+            style={style?.arrow?.nextArrow}
+            className={`arrow next-btn ${cssClasses?.arrow?.nextArrow}`}>
                 <KeyboardArrowRight/>
         </button>
         </>}
-        {dots && <div className="dots flex  gap-2 place-content-center place-items-center p-2">
+        {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent}`}>
             {Array.from({length:Math.ceil(componentLength/itemToScroll)}).map((_,index2)=>(
-                <span key={index2} onClick={()=>handleDotClick(index2+1)} className={`h-3 w-3 rounded-full cursor-pointer ${activeIndex == index2+1 ?  'bg-slate-500' : 'bg-slate-200'}`}></span>
+                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2+1 ==activeIndex ? 'active' : '' } ${cssClasses?.dots?.dot}`}></span>
             ))}
         </div>}
-    </div>
     </div>
   )
 }

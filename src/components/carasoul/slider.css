@@ -1,0 +1,56 @@
+.parent-box{
+    padding: 0;
+    position: relative;
+}
+
+.slick-container{
+    overflow: hidden;
+    transition: transform;
+}
+
+.slide-box{
+    padding: 10px;
+}
+
+.dot {
+    background-color: #d3d3d3;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .5s ease;
+  }
+
+  .dot.active{
+    background-color: gray;
+  }
+  .dot:hover{
+    background-color: gray;
+  }
+  
+
+ .dots-container{
+    display: flex;
+    gap: 5px;
+    place-content: center;
+    place-items: center;
+    padding: 5px;
+  }
+
+.arrow{
+    position: absolute;
+    top: calc(100% / 3);
+    background-color: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 10px gray;
+    background-color: white;
+}
+
+.arrow.prev-btn{
+    left: -10px;
+}
+.arrow.next-btn{
+    right: -10px;
+}
