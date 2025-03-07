@@ -47,11 +47,14 @@ export interface CarasoulProps{
     style?:slickStylesType;
     arrows?:boolean;
     centerMode?:boolean;
+    autoPlay?:boolean;
+    speed?:number;
     scrollDuration?:number;
-    infinite?:number;
-
+    scroll?:boolean;
+    infinite?:boolean;
     gapBetweenBox?:number;
     cssClasses?:cssClassesType;
+    removeArrowOnDisabled?:boolean;
     
 }
 

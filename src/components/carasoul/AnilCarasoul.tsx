@@ -12,23 +12,15 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     itemToScroll=1,
     dots=true,
     arrows=true,
-    infinite=0,
+    infinite=false,
+    scroll=true,
+    autoPlay=false,
+    speed=2000,
     scrollDuration=500,
     gapBetweenBox=0,
     style,
-    cssClasses={
-        // parentBox:'slickContainer p-2 relative',
-        // slickContainer:"carasoul-main-container overflow-hidden transition-transform",
-        // sliderComponent:`carasoul_container flex`,
-        // arrow:{
-        //     prevArrow:`prev_btn absolute top-1/3 rounded-full h-10 w-10 bg-slate-300 cursor-pointer`,
-        //     nextArrow:`next_btn absolute top-1/3 right-0 rounded-full h-10 w-10 bg-slate-300 cursor-pointer hover:shadow shadow-slate-600`
-        // }
-        // dots:{
-        //     parent:"dots flex  gap-2 place-content-center place-items-center p-2",
-        //     dot:`h-3 w-3 rounded-full cursor-pointer bg-slate-200`
-        // }
-    },
+    cssClasses,
+    removeArrowOnDisabled=false,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -63,6 +55,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // console.log('data array',dataArray)
     const componentLength:number = dataArray.length
     const convertedArray = [...childrenArray.slice(-itemToScroll),...childrenArray,...childrenArray.slice(0,childrenArray.length)]
+    
     // console.log('converetd array',convertedArray)
     const convertedLength:number = convertedArray.length
 
@@ -254,24 +247,44 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         setActiveTransform(true)
         // adjustIndex(index)r
         let newActiveIndex = index;
+        if(arrows){
+            handleArrow(newActiveIndex);
+        }
         transformFunction(newActiveIndex);
+
+        
         setTimeout(()=>{
             // setActiveTransform(false);
             // reversing the scroll option
             if(index==0){
-            setActiveTransform(false);
+                setActiveTransform(false);
                 newActiveIndex = Math.round(componentLength / itemToScroll)
                 transformFunction(newActiveIndex)
             }else if(index == Math.round(componentLength / itemToScroll) + 1){
-            setActiveTransform(false);
-
+                setActiveTransform(false);
+                
                 newActiveIndex = index - (componentLength / itemToScroll)
                 transformFunction(newActiveIndex)
             }
-
-
+            
         },scrollDuration)
     }
+
+    // function that handles the arrow enabling and disabling
+    const handleArrow =(index:number)=>{
+        console.log('active index btn ',index)
+        if(index <= 1){
+            setPrevBtnStatus(true)
+            setNextBtnStatus(false)
+        }else if(index >= componentLength){
+            setNextBtnStatus(true)
+            setPrevBtnStatus(false)
+        }else{
+            setPrevBtnStatus(false)
+            setNextBtnStatus(false)
+        }
+    }
+
 
     // console.log('dot index',dotIndex)
 
@@ -310,10 +323,8 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         // transformFunction(activeIndex)
     }
     const handleNextClick =(e:React.MouseEvent)=>{
-        if(activeIndex < componentLength){
             // setActiveIndex(activeIndex + 1)
             handleActiveIndex(activeIndex + 1)
-        }
         // transformFunction(activeIndex)
     }
 
@@ -327,7 +338,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     useEffect(()=>{
         let intervalId:any;
-        if(infinite > 0){
+        if(autoPlay && speed > 0){
         let i = 1;
         intervalId = setInterval(()=>{
             if (i > componentLength) {
@@ -336,9 +347,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 i = i + 1; // Otherwise increment
               }
             handleActiveIndex(i)
-        },infinite)
+        },speed)
         }
-    },[componentWidth,infinite])
+    },[componentWidth,autoPlay])
     
 
 
@@ -359,31 +370,33 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     
     // console.log('converted array',convertedArray)
   return (
-    <div className={`parent-box ${cssClasses?.parentBox}`} c-name="slick-parent-container" style={style?.parentBox}>
+    <div className={`parent-box ${cssClasses?.parentBox || ''}`} c-name="slick-parent-container" style={style?.parentBox}>
     
         <div 
-            className={`slick-container ${cssClasses?.slickContainer}`}
+            className={`slick-container ${cssClasses?.slickContainer || ''}`}
             style={{...defaultStyle.slickContainer,...style?.slickContainer}}
             ref={sliderContainerRef} 
-            onDragStart={handleDragStart}
-            onMouseMove={handleMouseMove} 
-            onMouseEnter={handleMouseEnter} 
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseOut={handleMouseOut}
-            onTouchStart={handleMouseDown}
-            onTouchEnd={handleMouseUp}
-            onTouchMove={handleMouseMove}
+            {...(scroll && {
+                onDragStart: handleDragStart,
+                onMouseMove: handleMouseMove,
+                onMouseEnter: handleMouseEnter,
+                onMouseDown: handleMouseDown,
+                onMouseUp: handleMouseUp,
+                onMouseOut: handleMouseOut,
+                onTouchStart: handleMouseDown,
+                onTouchEnd: handleMouseUp,
+                onTouchMove: handleMouseMove,
+              })}
             >
             <div 
-                className={`slider-component ${cssClasses?.sliderComponent}`}
+                className={`slider-component ${cssClasses?.sliderComponent || ''}`}
                 ref={sliderComponentRef}
                 style={{...defaultStyle?.sliderComponent , ...style?.sliderComponent}}
                 >
                 
                 {convertedArray.map((child,index)=>{
                     return(
-                        <div key={index} data-index={index-itemsToShow} className={`slide-box ${cssClasses?.slideBox}`} style={{...defaultStyle?.slideBox , ...style?.slideBox}}>
+                        <div key={index} data-index={index-itemsToShow} className={`slide-box ${cssClasses?.slideBox || ''}`} style={{...defaultStyle?.slideBox , ...style?.slideBox}}>
                             {child}
                         </div>
                     )
@@ -397,20 +410,20 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             onClick={handlePrevClick} 
             disabled={prevBtnStatus}
             style={style?.arrow?.prevArrow}
-            className={`arrow prev-btn ${cssClasses?.arrow?.prevArrow}`}>
+            className={`arrow prev-btn ${prevBtnStatus && "disabled"} ${cssClasses?.arrow?.prevArrow || ''}`}>
             <KeyboardArrowLeft/>
         </button>
         <button 
             onClick={handleNextClick} 
             disabled={nextBtnStatus}
             style={style?.arrow?.nextArrow}
-            className={`arrow next-btn ${cssClasses?.arrow?.nextArrow}`}>
+            className={`arrow next-btn ${nextBtnStatus && "disabled"} ${cssClasses?.arrow?.nextArrow || ''}`}>
                 <KeyboardArrowRight/>
         </button>
         </>}
-        {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent}`}>
+        {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent || ''}`}>
             {Array.from({length:Math.ceil(componentLength/itemToScroll)}).map((_,index2)=>(
-                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2+1 ==activeIndex ? 'active' : '' } ${cssClasses?.dots?.dot}`}></span>
+                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2+1 ==activeIndex ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
             ))}
         </div>}
     </div>

@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import AnilCarasoul from '../components/carasoul/AnilCarasoul';
-import CarasoulProps from '../components/carasoul/carasoulType';
+// import CarasoulProps from '../components/carasoul/carasoulType';
+import { CarasoulProps } from '../components/carasoul/carasoulType';
 import ProjectCard from '../cards/ProjectCard';
 
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
-        itemsToShow: 3,
+        itemsToShow: 2,
         itemToScroll: 1,
         arrows: true,
         dots: true,
-        infinite:0,
+        infinite:false,
+        autoPlay:false,
         scrollDuration:800,
+
     });
     const [infi,setInfi] = useState(false);
     const projects = [
@@ -117,11 +120,11 @@ const CarasoulPage = () => {
                         checked={infi} 
                         onChange={(e) => {
                             setInfi(e.target.checked);
-                            setSettings({ ...settings, infinite: e.target.checked ? 2000 : 0 })
+                            setSettings({ ...settings, autoPlay: e.target.checked ? true : false })
                         }} 
                         className="mr-2"
                     />
-                    Infinite Loop 2000s , 2s
+                     Autoplay Loop 2000s , 2s
                 </label>
             </div>
 
@@ -142,8 +145,6 @@ const CarasoulPage = () => {
                 <h2>A Real Life Example Project list</h2>
 
                 <AnilCarasoul {...settings}
-                    slideBoxClassName='mb-10 p-2'
-                    boxParentClassName=''
                     // gapBetweenBox={10}
                 >
                 {projects.map((project, index) => (

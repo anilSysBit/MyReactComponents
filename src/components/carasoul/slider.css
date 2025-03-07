@@ -46,11 +46,25 @@
     border-radius: 50%;
     box-shadow: 1px 1px 10px gray;
     background-color: white;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    color: rgb(36, 36, 36);
 }
+
+.arrow:hover{
+  /* color: black; */
+  /* box-shadow: 2px 2px 10px black; */
+}
+
 
 .arrow.prev-btn{
     left: -10px;
 }
 .arrow.next-btn{
     right: -10px;
+}
+
+.arrow.disabled{
+  /* opacity: 0.8; */
+  color: rgb(192, 192, 192);
 }
