@@ -6,8 +6,8 @@ import ProjectCard from '../cards/ProjectCard';
 
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
-        itemsToShow: 2,
-        itemToScroll: 1,
+        itemsToShow: 3,
+        itemToScroll: 2,
         arrows: true,
         dots: true,
         infinite:false,
@@ -68,11 +68,19 @@ const CarasoulPage = () => {
         {
             title: 'Pinterest Clone',
             description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
-            image: 'https://picsum.photos/400/300?random=6',
+            image: 'https://picsum.photos/400/300?random=7',
             tags: ['React.js', 'UI/UX'],
             liveUrl: 'https://pinterestwebx.vercel.app/',
             githubUrl: 'https://github.com',
-          }
+          },
+          {
+            title: 'Meal Planner',
+            description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
+            image: 'https://picsum.photos/400/300?random=8',
+            tags: ['Django', 'Full Stack', 'Meal Planning'],
+            liveUrl: 'http://localhost:8000/',
+            githubUrl: 'https://github.com/anilSysBit',
+          },
       ];
       
     return (

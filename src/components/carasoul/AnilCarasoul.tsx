@@ -59,7 +59,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // console.log('converetd array',convertedArray)
     const convertedLength:number = convertedArray.length
     
-    const dotLength =  Math.ceil((componentLength - itemsToShow) / itemToScroll) + itemToScroll;
+    const dotLength =  Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
     const dotArray = Array.from({length:dotLength})
 
     const getContainerData  =()=>{
@@ -195,19 +195,18 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         // let absolutePosition = 
 
         if(!infinite){
-            const componentStru = componentLength / itemToScroll
-            const oddGap = (Math.ceil(componentStru) - Math.floor(componentStru))
-            // console.log('odd gap',oddGap / itemsToShow)
-           console.log('calculation',dotLength , componentStru)
+            const componentStru = componentLength / itemsToShow
+            const oddGap = componentLength - itemsToShow
+           console.log('calculation', oddGap,dotLength , componentStru)
 
-            if(oddGap){
-                const nposition = oddGap / itemsToShow
-                if(absolutePosition > dotLength - itemToScroll){
-                    console.log('Yes on the last position')
-                    absolutePosition = dotLength - oddGap - 1 + nposition
-                }
-                console.log('new odd position',oddGap , nposition)
-            }
+            // if(itemsToShow == itemToScroll){
+            //     const nposition = oddGap / itemsToShow
+            //     if(absolutePosition > dotLength - 1 - oddGap){
+            //         console.log('Yes on the last position')
+            //         absolutePosition = dotLength - oddGap - 1 + nposition
+            //     }
+            //     console.log('new odd position',oddGap , nposition)
+            // }
             
             if(absolutePosition >= dotLength){
                 absolutePosition = dotLength - 1
@@ -218,7 +217,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
             
         }
-        console.log('absolute pos',absolutePosition)
+        // console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
