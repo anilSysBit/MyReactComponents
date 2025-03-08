@@ -182,9 +182,20 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }
     }
 
-    
-    
+    function getVacantElements(totalItems:number, viewportSize:number, scrollStep:number) {
+        let vacant = 0;
+        let i = 0;
+        while(i < totalItems){
+            i += scrollStep
+        }
+        let lastGroupSize = totalItems - (i - scrollStep)
+        if(lastGroupSize < viewportSize ){
+            vacant = viewportSize - lastGroupSize
+        }
 
+        return vacant;
+      }
+      
     const calculateAndTranformWithActiveIndex =(position?:number)=>{
         const unscrolledWidth = (componentWidth  * convertedLength ) - transformingWidth
         const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)
@@ -196,18 +207,20 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
         if(!infinite){
             const componentStru = componentLength / itemsToShow
-            const oddGap = componentLength - itemsToShow
-           console.log('calculation', oddGap,dotLength , componentStru)
+            const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
+            // const oddSpace = itemsToShow - vacantSpace
+            // console.log('odd space',oddSpace)
 
-            // if(itemsToShow == itemToScroll){
-            //     const nposition = oddGap / itemsToShow
-            //     if(absolutePosition > dotLength - 1 - oddGap){
-            //         console.log('Yes on the last position')
-            //         absolutePosition = dotLength - oddGap - 1 + nposition
-            //     }
-            //     console.log('new odd position',oddGap , nposition)
-            // }
-            
+            if(vacantSpace){
+                const remainingSpace = vacantSpace / itemToScroll
+                const newIndexSpace = vacantSpace - remainingSpace
+                
+                if(absolutePosition == dotLength - 1){
+                    absolutePosition = absolutePosition - newIndexSpace
+                    console.log('last elem before devastation',absolutePosition, newIndexSpace)
+                }
+            }
+
             if(absolutePosition >= dotLength){
                 absolutePosition = dotLength - 1
             }else if(absolutePosition < 0){
