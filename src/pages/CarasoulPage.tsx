@@ -64,7 +64,15 @@ const CarasoulPage = () => {
           tags: ['React.js', 'UI/UX'],
           liveUrl: 'https://pinterestwebx.vercel.app/',
           githubUrl: 'https://github.com',
-        }
+        },
+        {
+            title: 'Pinterest Clone',
+            description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
+            image: 'https://picsum.photos/400/300?random=6',
+            tags: ['React.js', 'UI/UX'],
+            liveUrl: 'https://pinterestwebx.vercel.app/',
+            githubUrl: 'https://github.com',
+          }
       ];
       
     return (

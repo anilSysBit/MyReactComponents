@@ -40,7 +40,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const [cursorType,setCursorType] = useState<string>('grab');
     const [transformWidth,setTransformWidth] = useState<number>(0);
     const [transformingWidth,setTransformingWidth] = useState<number>(0);
-    const [activeIndex,setActiveIndex] = useState<number>(1);
+    const [activeIndex,setActiveIndex] = useState<number>(0);
     const [dotIndex,setDotIndex] = useState<number>(1);
 
     const [prevBtnStatus,setPrevBtnStatus] = useState<boolean>(false);
@@ -54,11 +54,13 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     // console.log('data array',dataArray)
     const componentLength:number = dataArray.length
-    const convertedArray = [...childrenArray.slice(-itemToScroll),...childrenArray,...childrenArray.slice(0,childrenArray.length)]
-    
+    const changedArray = [...childrenArray.slice(-itemToScroll),...childrenArray,...childrenArray.slice(0,childrenArray.length)]
+    const convertedArray = infinite ? changedArray : childrenArray;
     // console.log('converetd array',convertedArray)
     const convertedLength:number = convertedArray.length
-
+    
+    const dotLength =  Math.ceil((componentLength - itemsToShow) / itemToScroll) + itemToScroll;
+    const dotArray = Array.from({length:dotLength})
 
     const getContainerData  =()=>{
         if(sliderContainerRef.current){
@@ -66,12 +68,14 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             const rect = sliderContainerRef.current.getBoundingClientRect();
             const rectWidth = rect.width
             setContainerWidth(rectWidth);
-            let screwWidth = ((rectWidth / itemsToShow) * itemToScroll);
+            let screwWidth = (rectWidth / itemsToShow) * itemToScroll;
             setScrollWidth(screwWidth)
 
             setComponentWidth(screwWidth);
-            setTransformingWidth(screwWidth)
-            setTransformWidth(screwWidth)
+            // setTransformingWidth(screwWidth)
+            // setTransformWidth(screwWidth)
+
+            calculateAndTranformWithActiveIndex(0);
             console.log('Rect Width',screwWidth)
 
         }
@@ -117,24 +121,23 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
             // const prevTransformedWidth = transformWidth;
             const newCalculatedWidth = transformWidth + newWidth
-            // console.log('new width',newWidth)
-            if(newCalculatedWidth < 0){
-                setTransformingWidth(0)
-                return;
-            }
-
-            if(newCalculatedWidth > componentWidth * (convertedLength - 1)){
-                console.log('excedding')
-                setTransformingWidth(componentWidth * (convertedLength - 1))
-                return;
+            if(!infinite){
+                if(newCalculatedWidth < 0){
+                    // setActiveTransform(false);
+                    console.log('new width',newCalculatedWidth)
+                    setTransformingWidth(newCalculatedWidth)
+                    return;
+                }
+    
+                else if(newCalculatedWidth > componentWidth * (convertedLength - itemToScroll)){
+                    console.log('excedding')
+                    setTransformingWidth(newCalculatedWidth)
+                    return;
+                }
             }
 
             setTransformingWidth(newCalculatedWidth)
-
             // if(transfor)
- 
-        
-
                 
         }
 
@@ -151,6 +154,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     const handleMouseEnter =(e:React.MouseEvent<HTMLDivElement>)=>{
         // console.log('Clicked to the element')
+        // setDragging(true);
         // setCursorType('grabbing');
     }
 
@@ -172,9 +176,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         let d = Math.abs(activeIndex - indexPosition); // Difference calculation
     
         if (activeIndex > indexPosition) {
-            return d > 1 / (itemToScroll * 5) ? Math.floor(indexPosition) : activeIndex;
+            return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
-            return d > 1 / (itemToScroll * 5) ? Math.ceil(indexPosition) : activeIndex;
+            return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
         }
     }
 
@@ -182,16 +186,42 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     
 
     const calculateAndTranformWithActiveIndex =(position?:number)=>{
-        const unscrolledWidth = (componentWidth  * convertedLength) - transformingWidth
+        const unscrolledWidth = (componentWidth  * convertedLength ) - transformingWidth
         const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)
         
-        console.log('active index',activeIndex,indexPosition)
+        // console.log('active index',activeIndex,indexPosition)
         // if(indexPosition < activeIndex/3)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
+        // let absolutePosition = 
+
+        if(!infinite){
+            const componentStru = componentLength / itemToScroll
+            const oddGap = (Math.ceil(componentStru) - Math.floor(componentStru))
+            // console.log('odd gap',oddGap / itemsToShow)
+           console.log('calculation',dotLength , componentStru)
+
+            if(oddGap){
+                const nposition = oddGap / itemsToShow
+                if(absolutePosition > dotLength - itemToScroll){
+                    console.log('Yes on the last position')
+                    absolutePosition = dotLength - oddGap - 1 + nposition
+                }
+                console.log('new odd position',oddGap , nposition)
+            }
+            
+            if(absolutePosition >= dotLength){
+                absolutePosition = dotLength - 1
+            }else if(absolutePosition < 0){
+                absolutePosition = 0
+    
+            }
+
+            
+        }
         console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
-        handleActiveIndex(absolutePosition )
+        handleActiveIndex(absolutePosition)
     }
 
     const handleMouseUp =(e:React.MouseEvent | React.TouchEvent)=>{
@@ -243,7 +273,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     }
 
     const handleActiveIndex =(index:number)=>{
-        console.log('index',index)
+        // console.log('index',index)
         setActiveTransform(true)
         // adjustIndex(index)r
         let newActiveIndex = index;
@@ -253,27 +283,30 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         transformFunction(newActiveIndex);
 
         
-        setTimeout(()=>{
-            // setActiveTransform(false);
-            // reversing the scroll option
-            if(index==0){
-                setActiveTransform(false);
-                newActiveIndex = Math.round(componentLength / itemToScroll)
-                transformFunction(newActiveIndex)
-            }else if(index == Math.round(componentLength / itemToScroll) + 1){
-                setActiveTransform(false);
+        if(!infinite){
+            setTimeout(()=>{
+                // setActiveTransform(false);
+                // reversing the scroll option
+                if(index== -1){
+                    setActiveTransform(false);
+                    newActiveIndex = Math.round(componentLength / itemToScroll)
+                    transformFunction(newActiveIndex)
+                }else if(index == Math.round(componentLength / itemToScroll) + 1){
+                    setActiveTransform(false);
+                    
+                    newActiveIndex = index - (componentLength / itemToScroll)
+                    transformFunction(newActiveIndex)
+                }
                 
-                newActiveIndex = index - (componentLength / itemToScroll)
-                transformFunction(newActiveIndex)
-            }
-            
-        },scrollDuration)
+            },scrollDuration)
+        }
+
     }
 
     // function that handles the arrow enabling and disabling
     const handleArrow =(index:number)=>{
-        console.log('active index btn ',index)
-        if(index <= 1){
+        // console.log('active index btn ',index)
+        if(index <= 0){
             setPrevBtnStatus(true)
             setNextBtnStatus(false)
         }else if(index >= componentLength){
@@ -349,16 +382,17 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             handleActiveIndex(i)
         },speed)
         }
-    },[componentWidth,autoPlay])
+    },[autoPlay])
+    
     
 
-
+    // console.log('dot array',componentLength / itemsToShow)
     const defaultStyle:slickStylesType = {
         sliderComponent:{
             display:'flex',
             cursor:cursorType,
             width:`${containerWidth * convertedLength}px`,
-            transform:`translate3d(-${transformingWidth}px,0px,0px)`,
+            transform:`translate3d(${-transformingWidth}px,0px,0px)`,
             transition:activeTransform ? `-webkit-transform ${scrollDuration}ms`:'',
         },
         slideBox:{
@@ -383,6 +417,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 onMouseDown: handleMouseDown,
                 onMouseUp: handleMouseUp,
                 onMouseOut: handleMouseOut,
+                // onMouseLeave:handleMouseOut,
                 onTouchStart: handleMouseDown,
                 onTouchEnd: handleMouseUp,
                 onTouchMove: handleMouseMove,
@@ -422,8 +457,8 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         </button>
         </>}
         {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent || ''}`}>
-            {Array.from({length:Math.ceil(componentLength/itemToScroll)}).map((_,index2)=>(
-                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2+1 ==activeIndex ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
+            {dotArray.map((_,index2)=>(
+                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2)} className={`dot ${index2 ==Math.ceil(activeIndex) ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
             ))}
         </div>}
     </div>
