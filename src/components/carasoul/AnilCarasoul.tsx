@@ -182,19 +182,24 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }
     }
 
-    function getVacantElements(totalItems:number, viewportSize:number, scrollStep:number) {
+    function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
         let vacant = 0;
         let i = 0;
-        while(i < totalItems){
-            i += scrollStep
+    
+        // Find the last valid start index
+        while (i + viewportSize < totalItems) {
+            i += scrollStep;
         }
-        let lastGroupSize = totalItems - (i - scrollStep)
-        if(lastGroupSize < viewportSize ){
-            vacant = viewportSize - lastGroupSize
+    
+        // Remaining elements in the last group
+        let lastGroupSize = totalItems - i;
+    
+        if (lastGroupSize < viewportSize) {
+            vacant = viewportSize - lastGroupSize;
         }
-
+    
         return vacant;
-      }
+    }
       
     const calculateAndTranformWithActiveIndex =(position?:number)=>{
         const unscrolledWidth = (componentWidth  * convertedLength ) - transformingWidth
@@ -209,19 +214,22 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             const componentStru = componentLength / itemsToShow
             const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
             // const oddSpace = itemsToShow - vacantSpace
-            // console.log('odd space',oddSpace)
+            console.log('odd space',vacantSpace)
 
-            if(vacantSpace){
-                const remainingSpace = vacantSpace / itemToScroll
-                const newIndexSpace = vacantSpace - remainingSpace
-                
-                if(absolutePosition == dotLength - 1){
-                    absolutePosition = absolutePosition - newIndexSpace
-                    console.log('last elem before devastation',absolutePosition, newIndexSpace)
+            
+
+            if(absolutePosition == dotLength - 1){
+                if(vacantSpace){
+                    const remainingSpace = vacantSpace / itemToScroll
+                    // const newIndexSpace = vacantSpace - remainingSpace
+                        absolutePosition = dotLength - 1 - remainingSpace
+                        console.log('last elem before devastation',vacantSpace, remainingSpace)
+                }else{
+                absolutePosition = dotLength - 1
                 }
+            
             }
-
-            if(absolutePosition >= dotLength){
+            else if(absolutePosition >= dotLength - 1){
                 absolutePosition = dotLength - 1
             }else if(absolutePosition < 0){
                 absolutePosition = 0
@@ -230,7 +238,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
             
         }
-        // console.log('absolute pos',absolutePosition)
+        console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -318,10 +326,11 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // function that handles the arrow enabling and disabling
     const handleArrow =(index:number)=>{
         // console.log('active index btn ',index)
+        // const newIndex = Math.ceil(index);
         if(index <= 0){
             setPrevBtnStatus(true)
             setNextBtnStatus(false)
-        }else if(index >= componentLength){
+        }else if(index >= dotLength - 1){
             setNextBtnStatus(true)
             setPrevBtnStatus(false)
         }else{
