@@ -6,11 +6,11 @@ import ProjectCard from '../cards/ProjectCard';
 
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
-        itemsToShow: 3,
-        itemToScroll: 2,
+        itemsToShow: 4,
+        itemToScroll: 4,
         arrows: true,
         dots: true,
-        infinite:false,
+        infinite:true,
         autoPlay:false,
         scrollDuration:800,
 
@@ -65,22 +65,38 @@ const CarasoulPage = () => {
           liveUrl: 'https://pinterestwebx.vercel.app/',
           githubUrl: 'https://github.com',
         },
-        {
-            title: 'Pinterest Clone',
-            description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
-            image: 'https://picsum.photos/400/300?random=7',
-            tags: ['React.js', 'UI/UX'],
-            liveUrl: 'https://pinterestwebx.vercel.app/',
-            githubUrl: 'https://github.com',
-          },
-          {
-            title: 'Meal Planner',
-            description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
-            image: 'https://picsum.photos/400/300?random=8',
-            tags: ['Django', 'Full Stack', 'Meal Planning'],
-            liveUrl: 'http://localhost:8000/',
-            githubUrl: 'https://github.com/anilSysBit',
-          },
+        // {
+        //     title: 'Povertect Clone',
+        //     description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
+        //     image: 'https://picsum.photos/400/300?random=7',
+        //     tags: ['React.js', 'UI/UX'],
+        //     liveUrl: 'https://pinterestwebx.vercel.app/',
+        //     githubUrl: 'https://github.com',
+        //   },
+        //   {
+        //     title: 'Obertact Planner',
+        //     description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
+        //     image: 'https://picsum.photos/400/300?random=8',
+        //     tags: ['Django', 'Full Stack', 'Meal Planning'],
+        //     liveUrl: 'http://localhost:8000/',
+        //     githubUrl: 'https://github.com/anilSysBit',
+        //   },
+        //   {
+        //     title: 'Hawa Planner',
+        //     description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
+        //     image: 'https://picsum.photos/400/300?random=4',
+        //     tags: ['Django', 'Full Stack', 'Meal Planning'],
+        //     liveUrl: 'http://localhost:8000/',
+        //     githubUrl: 'https://github.com/anilSysBit',
+        //   },
+        //   {
+        //     title: 'Hawa dinner',
+        //     description: 'A website for handling blood delivery data with Laravel for backend and user management.',
+        //     image: 'https://picsum.photos/400/300?random=5',
+        //     tags: ['Laravel', 'Backend', 'Blood Management'],
+        //     liveUrl: 'http://localhost:5173',
+        //     githubUrl: 'https://github.com/anilSysBit',
+        //   },
       ];
       
     return (
@@ -156,7 +172,7 @@ const CarasoulPage = () => {
                 ))}
             </AnilCarasoul> */}
 
-            
+            <p>{projects.length}</p>
             <div className='mt-5 p-15'>
                 <h2>A Real Life Example Project list</h2>
 

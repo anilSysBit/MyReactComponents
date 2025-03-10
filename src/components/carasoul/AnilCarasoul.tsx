@@ -6,6 +6,26 @@ import './slider.css';
 // import CarasoulProps from './carasoulType';
 import type { CarasoulProps, cssClassesType, slickStylesType } from './carasoulType';
 
+
+function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
+    let vacant = 0;
+    let i = 0;
+
+    // Find the last valid start index
+    while (i + viewportSize < totalItems) {
+        i += scrollStep;
+    }
+
+    // Remaining elements in the last group
+    let lastGroupSize = totalItems - i;
+
+    if (lastGroupSize < viewportSize) {
+        vacant = viewportSize - lastGroupSize;
+    }
+
+    return vacant;
+}
+  
 const AnilCarasoul:React.FC<CarasoulProps> = ({
     children,
     itemsToShow=1,
@@ -40,7 +60,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const [cursorType,setCursorType] = useState<string>('grab');
     const [transformWidth,setTransformWidth] = useState<number>(0);
     const [transformingWidth,setTransformingWidth] = useState<number>(0);
-    const [activeIndex,setActiveIndex] = useState<number>(0);
+    const [activeIndex,setActiveIndex] = useState<number>(1);
     const [dotIndex,setDotIndex] = useState<number>(1);
 
     const [prevBtnStatus,setPrevBtnStatus] = useState<boolean>(false);
@@ -59,10 +79,13 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // console.log('converetd array',convertedArray)
     const convertedLength:number = convertedArray.length
     
-    const dotLength =  Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
+    const dotLength = infinite? Math.ceil(componentLength / itemToScroll)  : Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
     const dotArray = Array.from({length:dotLength})
+    const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
+
 
     const getContainerData  =()=>{
+        console.log('vacant space',vacantSpace)
         if(sliderContainerRef.current){
             // slider container 
             const rect = sliderContainerRef.current.getBoundingClientRect();
@@ -72,10 +95,15 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             setScrollWidth(screwWidth)
 
             setComponentWidth(screwWidth);
-            // setTransformingWidth(screwWidth)
-            // setTransformWidth(screwWidth)
+            
 
-            calculateAndTranformWithActiveIndex(0);
+            if(infinite){
+                // handleActiveIndex(1)
+                // calculateAndTranformWithActiveIndex(1)
+                setTransformingWidth(screwWidth)
+                setTransformWidth(screwWidth)
+
+            }
             console.log('Rect Width',screwWidth)
 
         }
@@ -182,43 +210,18 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }
     }
 
-    function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
-        let vacant = 0;
-        let i = 0;
-    
-        // Find the last valid start index
-        while (i + viewportSize < totalItems) {
-            i += scrollStep;
-        }
-    
-        // Remaining elements in the last group
-        let lastGroupSize = totalItems - i;
-    
-        if (lastGroupSize < viewportSize) {
-            vacant = viewportSize - lastGroupSize;
-        }
-    
-        return vacant;
-    }
-      
+
     const calculateAndTranformWithActiveIndex =(position?:number)=>{
         const unscrolledWidth = (componentWidth  * convertedLength ) - transformingWidth
-        const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)
-        
+        const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)       
         // console.log('active index',activeIndex,indexPosition)
         // if(indexPosition < activeIndex/3)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
         // let absolutePosition = 
+        console.log('absolute pos',absolutePosition)
 
         if(!infinite){
-            const componentStru = componentLength / itemsToShow
-            const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
-            // const oddSpace = itemsToShow - vacantSpace
-            console.log('odd space',vacantSpace)
-
-            
-
-            if(absolutePosition == dotLength - 1){
+            if(absolutePosition >= dotLength - 1){
                 if(vacantSpace){
                     const remainingSpace = vacantSpace / itemToScroll
                     // const newIndexSpace = vacantSpace - remainingSpace
@@ -229,16 +232,18 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 }
             
             }
-            else if(absolutePosition >= dotLength - 1){
-                absolutePosition = dotLength - 1
-            }else if(absolutePosition < 0){
+            
+            else if(absolutePosition < 0){
                 absolutePosition = 0
     
             }
 
             
+        }else{
+            if(vacantSpace){
+                // if(absolutePosition >)
+            }
         }
-        console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -297,29 +302,43 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         setActiveTransform(true)
         // adjustIndex(index)r
         let newActiveIndex = index;
-        if(arrows){
+        if(arrows && !infinite){
             handleArrow(newActiveIndex);
         }
-        transformFunction(newActiveIndex);
 
         
-        if(!infinite){
+        if(infinite){
+            if(newActiveIndex == dotLength){
+                const remainingSpace = vacantSpace / itemToScroll
+            // const newIndexSpace = vacantSpace - remainingSpace
+                newActiveIndex = dotLength - remainingSpace
+                console.log('last elem before devastation',vacantSpace, remainingSpace)
+            }
             setTimeout(()=>{
                 // setActiveTransform(false);
                 // reversing the scroll option
-                if(index== -1){
+                if(index < 1){
                     setActiveTransform(false);
-                    newActiveIndex = Math.round(componentLength / itemToScroll)
+                    if(vacantSpace){
+                        const remainingSpace = vacantSpace / itemToScroll
+                    // const newIndexSpace = vacantSpace - remainingSpace
+                        newActiveIndex = dotLength  - remainingSpace
+                    }else{
+                        newActiveIndex = dotLength
+
+                    }
                     transformFunction(newActiveIndex)
-                }else if(index == Math.round(componentLength / itemToScroll) + 1){
+                }else if(index > dotLength){
                     setActiveTransform(false);
                     
-                    newActiveIndex = index - (componentLength / itemToScroll)
+                    newActiveIndex = 1
                     transformFunction(newActiveIndex)
                 }
                 
             },scrollDuration)
         }
+        transformFunction(newActiveIndex);
+
 
     }
 
@@ -479,7 +498,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         </>}
         {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent || ''}`}>
             {dotArray.map((_,index2)=>(
-                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2)} className={`dot ${index2 ==Math.ceil(activeIndex) ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
+                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2 ==Math.ceil(activeIndex-1) ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
             ))}
         </div>}
     </div>
