@@ -206,16 +206,23 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         if (activeIndex > indexPosition) {
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
-            return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
+
+            if(vacantSpace){
+                return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
+            }else{
+                return d > 1 / (itemsToShow * 5) ? Math.ceil(activeIndex) : activeIndex;
+
+            }
         }
     }
 
 
     const calculateAndTranformWithActiveIndex =(position?:number)=>{
         const unscrolledWidth = (componentWidth  * convertedLength ) - transformingWidth
-        const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)       
+        const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)    
         // console.log('active index',activeIndex,indexPosition)
         // if(indexPosition < activeIndex/3)
+        console.log('index position',indexPosition)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
         // let absolutePosition = 
         console.log('absolute pos',absolutePosition)
@@ -242,6 +249,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }else{
             if(vacantSpace){
                 // if(absolutePosition >)
+
             }
         }
 
