@@ -50,7 +50,7 @@ export interface CarasoulProps{
     autoPlay?:boolean;
     speed?:number;
     scrollDuration?:number;
-    scroll?:boolean;
+    scroll?:boolean;  
     infinite?:boolean;
     gapBetweenBox?:number;
     cssClasses?:cssClassesType;

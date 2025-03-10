@@ -60,7 +60,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const [cursorType,setCursorType] = useState<string>('grab');
     const [transformWidth,setTransformWidth] = useState<number>(0);
     const [transformingWidth,setTransformingWidth] = useState<number>(0);
-    const [activeIndex,setActiveIndex] = useState<number>(1);
+    const [activeIndex,setActiveIndex] = useState<number>(0);
     const [dotIndex,setDotIndex] = useState<number>(1);
 
     const [prevBtnStatus,setPrevBtnStatus] = useState<boolean>(false);
@@ -122,6 +122,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // })
 
     useEffect(()=>{
+        if(infinite){
+            setActiveIndex(1);
+        }
         getContainerData();
     },[itemsToShow,itemToScroll,arrows,dots])
 
@@ -207,10 +210,10 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
 
-            if(vacantSpace){
+            if(infinite && vacantSpace){
                 return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
             }else{
-                return d > 1 / (itemsToShow * 5) ? Math.ceil(activeIndex) : activeIndex;
+                return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
 
             }
         }
@@ -227,31 +230,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         // let absolutePosition = 
         console.log('absolute pos',absolutePosition)
 
-        if(!infinite){
-            if(absolutePosition >= dotLength - 1){
-                if(vacantSpace){
-                    const remainingSpace = vacantSpace / itemToScroll
-                    // const newIndexSpace = vacantSpace - remainingSpace
-                        absolutePosition = dotLength - 1 - remainingSpace
-                        console.log('last elem before devastation',vacantSpace, remainingSpace)
-                }else{
-                absolutePosition = dotLength - 1
-                }
-            
-            }
-            
-            else if(absolutePosition < 0){
-                absolutePosition = 0
-    
-            }
-
-            
-        }else{
-            if(vacantSpace){
-                // if(absolutePosition >)
-
-            }
-        }
+        
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -315,37 +294,62 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }
 
         
-        if(infinite){
-            if(newActiveIndex == dotLength){
-                const remainingSpace = vacantSpace / itemToScroll
-            // const newIndexSpace = vacantSpace - remainingSpace
-                newActiveIndex = dotLength - remainingSpace
-                console.log('last elem before devastation',vacantSpace, remainingSpace)
-            }
-            setTimeout(()=>{
-                // setActiveTransform(false);
-                // reversing the scroll option
-                if(index < 1){
-                    setActiveTransform(false);
-                    if(vacantSpace){
-                        const remainingSpace = vacantSpace / itemToScroll
+        if(!infinite){
+            if(newActiveIndex >= dotLength - 1){
+                if(vacantSpace){
+                    const remainingSpace = vacantSpace / itemToScroll
                     // const newIndexSpace = vacantSpace - remainingSpace
-                        newActiveIndex = dotLength  - remainingSpace
-                    }else{
-                        newActiveIndex = dotLength
-
-                    }
-                    transformFunction(newActiveIndex)
-                }else if(index > dotLength){
-                    setActiveTransform(false);
-                    
-                    newActiveIndex = 1
-                    transformFunction(newActiveIndex)
+                        newActiveIndex = dotLength - 1 - remainingSpace
+                        console.log('last elem before devastation',vacantSpace, remainingSpace)
+                }else{
+                newActiveIndex = dotLength - 1
                 }
+            
+            }
+            
+            else if(newActiveIndex < 0){
+                newActiveIndex = 0
+    
+            }
+
+            
+        }else{
+        if(vacantSpace){
+            if(itemToScroll == itemsToShow){
+                if(newActiveIndex == dotLength){
+                    const remainingSpace = vacantSpace / itemToScroll
+                // const newIndexSpace = vacantSpace - remainingSpace
+                    newActiveIndex = dotLength - remainingSpace
+                    console.log('last elem before devastation',vacantSpace, remainingSpace)
+                }
+            }
+        }
+        setTimeout(()=>{
+            // setActiveTransform(false);
+            // reversing the scroll option
+            if(index < (infinite ? 1 : 0)){
+                setActiveTransform(false);
+                if(vacantSpace){
+                    const remainingSpace = vacantSpace / itemToScroll
+                // const newIndexSpace = vacantSpace - remainingSpace
+                    newActiveIndex = dotLength  - remainingSpace
+                }else{
+                    newActiveIndex = dotLength
+
+                }
+                transformFunction(newActiveIndex)
+            }else if(index > dotLength){
+                setActiveTransform(false);
                 
-            },scrollDuration)
+                newActiveIndex = 1
+                transformFunction(newActiveIndex)
+            }
+            
+        },scrollDuration)
         }
         transformFunction(newActiveIndex);
+    
+            
 
 
     }
@@ -398,7 +402,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const handlePrevClick =(e:React.MouseEvent)=>{
         // if(activeIndex > 0){
             // setActiveIndex(activeIndex - 1)
-            handleActiveIndex(activeIndex - 1)
+            handleActiveIndex(Math.ceil(activeIndex) - 1)
         
         // }
         // transformFunction(activeIndex)
@@ -506,7 +510,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         </>}
         {dots && <div  style={style?.dots?.parent} className={`dots-container ${cssClasses?.dots?.parent || ''}`}>
             {dotArray.map((_,index2)=>(
-                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(index2+1)} className={`dot ${index2 ==Math.ceil(activeIndex-1) ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
+                <span  style={style?.dots?.dot} key={index2} onClick={()=>handleDotClick(infinite ? index2+1 : index2)} className={`dot ${index2 == Math.ceil(infinite ? activeIndex-1 : activeIndex) ? 'active' : '' } ${cssClasses?.dots?.dot || ''}`}></span>
             ))}
         </div>}
     </div>

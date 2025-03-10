@@ -3,18 +3,27 @@ import AnilCarasoul from '../components/carasoul/AnilCarasoul';
 // import CarasoulProps from '../components/carasoul/carasoulType';
 import { CarasoulProps } from '../components/carasoul/carasoulType';
 import ProjectCard from '../cards/ProjectCard';
-
+import Slider from 'react-slick'
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
-        itemsToShow: 4,
-        itemToScroll: 4,
+        itemsToShow: 3,
+        itemToScroll: 3,
         arrows: true,
         dots: true,
-        infinite:true,
+        infinite:false,
         autoPlay:false,
         scrollDuration:800,
 
     });
+    var settings2 = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+      };
     const [infi,setInfi] = useState(false);
     const projects = [
         {
@@ -168,7 +177,7 @@ const CarasoulPage = () => {
                     <div key={elem} className='bg-green-300 h-69 w-full flex place-content-center place-items-center'>
                         {elem}
                         <img src={`https://picsum.photos/100?random=${elem}`} alt={`Slide ${elem}`} />
-                    </div>
+                    </div>  
                 ))}
             </AnilCarasoul> */}
 
@@ -186,6 +195,29 @@ const CarasoulPage = () => {
                 </AnilCarasoul>
 
             </div>
+
+
+        {/* <Slider {...settings2}>
+        <div className='border-2'>
+        <h3>1</h3>
+      </div>
+      <div>
+        <h3>2</h3>
+      </div>
+      <div>
+        <h3>3</h3>
+      </div>
+      <div>
+        <h3>4</h3>
+      </div>
+      <div>
+        <h3>5</h3>
+      </div>
+      <div>
+        <h3>6</h3>
+      </div>
+        </Slider> */}
+                 
         </div>
     );
 };
