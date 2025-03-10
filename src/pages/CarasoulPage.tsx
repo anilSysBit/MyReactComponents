@@ -12,7 +12,7 @@ const CarasoulPage = () => {
         itemToScroll: 3,
         arrows: true,
         dots: true,
-        infinite:false,
+        infinite:true,
         autoPlay:false,
         scrollDuration:800,
 
@@ -166,6 +166,16 @@ const CarasoulPage = () => {
                         className="mr-2"
                     />
                      Autoplay Loop 2000s , 2s
+                </label>
+
+                <label className="block mb-2">
+                    <input 
+                        type="checkbox" 
+                        checked={settings.infinite} 
+                        onChange={(e) => setSettings({ ...settings, infinite: e.target.checked })} 
+                        className="mr-2"
+                    />
+                     Infinite
                 </label>
             </div>
 

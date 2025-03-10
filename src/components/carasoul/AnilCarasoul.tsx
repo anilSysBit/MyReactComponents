@@ -126,7 +126,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             setActiveIndex(1);
         }
         getContainerData();
-    },[itemsToShow,itemToScroll,arrows,dots])
+    },[itemsToShow,itemToScroll,arrows,dots,infinite])
 
 
     const handleTransformMovement =()=>{
