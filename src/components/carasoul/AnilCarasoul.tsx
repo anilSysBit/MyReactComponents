@@ -5,6 +5,7 @@ import { G } from 'react-router/dist/development/fog-of-war-CCAcUMgB';
 import './slider.css';
 // import CarasoulProps from './carasoulType';
 import type { CarasoulProps, cssClassesType, slickStylesType } from './carasoulType';
+import { checkUnevenSets } from './utils';
 
 
 function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
@@ -25,7 +26,8 @@ function getVacantElements(totalItems: number, viewportSize: number, scrollStep:
 
     return vacant;
 }
-  
+
+
 const AnilCarasoul:React.FC<CarasoulProps> = ({
     children,
     itemsToShow=1,
@@ -82,9 +84,11 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const dotLength = infinite? Math.ceil(componentLength / itemToScroll)  : Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
     const dotArray = Array.from({length:dotLength})
     const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
+    const unevenStatus = !checkUnevenSets(componentLength,itemsToShow,itemToScroll)
 
 
     const getContainerData  =()=>{
+        console.log('Uneven Set or not',unevenStatus)
         console.log('vacant space',vacantSpace)
         if(sliderContainerRef.current){
             // slider container 
@@ -210,7 +214,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
 
-            if(infinite && vacantSpace){
+            if(infinite && !unevenStatus){
                 return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
             }else{
 
@@ -226,10 +230,10 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         const indexPosition = (convertedLength) -  (unscrolledWidth / componentWidth)    
         // console.log('active index',activeIndex,indexPosition)
         // if(indexPosition < activeIndex/3)
-        console.log('index position',indexPosition)
+        // console.log('index position',indexPosition)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
         // let absolutePosition = 
-        console.log('absolute pos',absolutePosition)
+        // console.log('absolute pos',absolutePosition)
 
         
 
@@ -315,8 +319,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
             
         }else{
-        if(vacantSpace){
-            if(itemToScroll == itemsToShow){
+            if(!unevenStatus){
                 if(newActiveIndex == dotLength){
                     const remainingSpace = vacantSpace / itemToScroll
                 // const newIndexSpace = vacantSpace - remainingSpace
@@ -324,7 +327,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                     console.log('last elem before devastation',vacantSpace, remainingSpace)
                 }
             }
-        }
 
         transformFunction(newActiveIndex);
 
