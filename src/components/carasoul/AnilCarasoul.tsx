@@ -27,6 +27,21 @@ function getVacantElements(totalItems: number, viewportSize: number, scrollStep:
     return vacant;
 }
 
+function getBasicData(){
+    const shift = 4
+    const arr = [1,2,3,4,5,6]
+    let convertedLength = 0;
+    let infiniteArray = [];
+    let unevenSkipPosition = 0;
+    const arrLen = arr.length
+
+    const beforeArray = arr.slice(arrLen-shift,arrLen)
+    const newAppendedPosition = beforeArray.length + arrLen
+    const onePositionIndex = 1 / shift;
+    unevenSkipPosition = newAppendedPosition * onePositionIndex
+    infiniteArray = [...beforeArray,...arr,...arr]
+    convertedLength = arrLen * 2 + shift;
+}
 
 const AnilCarasoul:React.FC<CarasoulProps> = ({
     children,
