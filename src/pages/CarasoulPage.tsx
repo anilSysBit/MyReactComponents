@@ -9,7 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
         itemsToShow: 3,
-        itemToScroll: 3,
+        itemToScroll: 2,
         arrows: true,
         dots: true,
         infinite:true,

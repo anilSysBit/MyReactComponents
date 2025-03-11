@@ -210,12 +210,13 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
 
-            if(infinite && vacantSpace){
-                return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
-            }else{
-                return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
+            // if(infinite && vacantSpace){
+            //     return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
+            // }else{
 
-            }
+            // }
+            return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
+
         }
     }
 
@@ -324,19 +325,23 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 }
             }
         }
+
+        transformFunction(newActiveIndex);
+
         setTimeout(()=>{
             // setActiveTransform(false);
             // reversing the scroll option
             if(index < (infinite ? 1 : 0)){
                 setActiveTransform(false);
-                if(vacantSpace){
-                    const remainingSpace = vacantSpace / itemToScroll
-                // const newIndexSpace = vacantSpace - remainingSpace
-                    newActiveIndex = dotLength  - remainingSpace
-                }else{
-                    newActiveIndex = dotLength
+                // if(vacantSpace){
+                //     const remainingSpace = vacantSpace / itemToScroll
+                // // const newIndexSpace = vacantSpace - remainingSpace
+                //     newActiveIndex = dotLength  - remainingSpace
+                // }else{
+                //     newActiveIndex = dotLength
 
-                }
+                // } 
+                newActiveIndex = dotLength
                 transformFunction(newActiveIndex)
             }else if(index > dotLength){
                 setActiveTransform(false);
@@ -347,7 +352,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             
         },scrollDuration)
         }
-        transformFunction(newActiveIndex);
     
             
 
