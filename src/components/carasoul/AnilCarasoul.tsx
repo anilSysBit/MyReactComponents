@@ -333,14 +333,14 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             // reversing the scroll option
             if(index < (infinite ? 1 : 0)){
                 setActiveTransform(false);
-                // if(vacantSpace){
-                //     const remainingSpace = vacantSpace / itemToScroll
-                // // const newIndexSpace = vacantSpace - remainingSpace
-                //     newActiveIndex = dotLength  - remainingSpace
-                // }else{
-                //     newActiveIndex = dotLength
+                if(itemToScroll == itemsToShow && vacantSpace){
+                    const remainingSpace = vacantSpace / itemToScroll
+                // const newIndexSpace = vacantSpace - remainingSpace
+                    newActiveIndex = dotLength  - remainingSpace
+                }else{
+                    newActiveIndex = dotLength
 
-                // } 
+                } 
                 newActiveIndex = dotLength
                 transformFunction(newActiveIndex)
             }else if(index > dotLength){
@@ -352,9 +352,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             
         },scrollDuration)
         }
-    
-            
-
 
     }
 
