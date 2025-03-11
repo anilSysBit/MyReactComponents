@@ -210,12 +210,12 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
 
-            // if(infinite && vacantSpace){
-            //     return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
-            // }else{
+            if(infinite && vacantSpace){
+                return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
+            }else{
 
-            // }
-            return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
+                return d > 1 / (itemsToShow * 5) ? Math.ceil(indexPosition) : activeIndex;
+            }
 
         }
     }
