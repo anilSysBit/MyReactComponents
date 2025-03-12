@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const CarasoulPage = () => {
     const [settings, setSettings] = useState<CarasoulProps>({
-        itemsToShow: 5,
+        itemsToShow: 4,
         itemToScroll: 4,
         arrows: true,
         dots: true,
@@ -21,7 +21,7 @@ const CarasoulPage = () => {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 5,
         slidesToScroll: 4,
       };
     const [infi,setInfi] = useState(false);
@@ -74,38 +74,38 @@ const CarasoulPage = () => {
           liveUrl: 'https://pinterestwebx.vercel.app/',
           githubUrl: 'https://github.com',
         },
-        // {
-        //     title: 'Povertect Clone',
-        //     description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
-        //     image: 'https://picsum.photos/400/300?random=7',
-        //     tags: ['React.js', 'UI/UX'],
-        //     liveUrl: 'https://pinterestwebx.vercel.app/',
-        //     githubUrl: 'https://github.com',
-        //   },
-        //   {
-        //     title: 'Obertact Planner',
-        //     description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
-        //     image: 'https://picsum.photos/400/300?random=8',
-        //     tags: ['Django', 'Full Stack', 'Meal Planning'],
-        //     liveUrl: 'http://localhost:8000/',
-        //     githubUrl: 'https://github.com/anilSysBit',
-        //   },
-        //   {
-        //     title: 'Hawa Planner',
-        //     description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
-        //     image: 'https://picsum.photos/400/300?random=4',
-        //     tags: ['Django', 'Full Stack', 'Meal Planning'],
-        //     liveUrl: 'http://localhost:8000/',
-        //     githubUrl: 'https://github.com/anilSysBit',
-        //   },
-        //   {
-        //     title: 'Hawa dinner',
-        //     description: 'A website for handling blood delivery data with Laravel for backend and user management.',
-        //     image: 'https://picsum.photos/400/300?random=5',
-        //     tags: ['Laravel', 'Backend', 'Blood Management'],
-        //     liveUrl: 'http://localhost:5173',
-        //     githubUrl: 'https://github.com/anilSysBit',
-        //   },
+        {
+            title: 'Povertect Clone',
+            description: 'A Pinterest-like clone with React.js featuring image sharing and user interactions.',
+            image: 'https://picsum.photos/400/300?random=7',
+            tags: ['React.js', 'UI/UX'],
+            liveUrl: 'https://pinterestwebx.vercel.app/',
+            githubUrl: 'https://github.com',
+          },
+          {
+            title: 'Obertact Planner',
+            description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
+            image: 'https://picsum.photos/400/300?random=8',
+            tags: ['Django', 'Full Stack', 'Meal Planning'],
+            liveUrl: 'http://localhost:8000/',
+            githubUrl: 'https://github.com/anilSysBit',
+          },
+          {
+            title: 'Hawa Planner',
+            description: 'A website that recommends personalized meals based on BMI, user preferences, and daily routines.',
+            image: 'https://picsum.photos/400/300?random=4',
+            tags: ['Django', 'Full Stack', 'Meal Planning'],
+            liveUrl: 'http://localhost:8000/',
+            githubUrl: 'https://github.com/anilSysBit',
+          },
+          {
+            title: 'Hawa dinner',
+            description: 'A website for handling blood delivery data with Laravel for backend and user management.',
+            image: 'https://picsum.photos/400/300?random=5',
+            tags: ['Laravel', 'Backend', 'Blood Management'],
+            liveUrl: 'http://localhost:5173',
+            githubUrl: 'https://github.com/anilSysBit',
+          },
       ];
       
     return (

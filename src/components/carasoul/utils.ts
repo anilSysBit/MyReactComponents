@@ -68,3 +68,21 @@ export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewpor
 };
 
 
+export function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
+  let vacant = 0;
+  let i = 0;
+
+  // Find the last valid start index
+  while (i + viewportSize < totalItems) {
+      i += scrollStep;
+  }
+
+  // Remaining elements in the last group
+  let lastGroupSize = totalItems - i;
+
+  if (lastGroupSize < viewportSize) {
+      vacant = viewportSize - lastGroupSize;
+  }
+
+  return vacant;
+}

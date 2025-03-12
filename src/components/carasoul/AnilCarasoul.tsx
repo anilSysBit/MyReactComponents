@@ -1,46 +1,14 @@
 import { ArrowRight, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { convertLength } from '@mui/material/styles/cssUtils';
 import React, { useEffect, useRef, useState } from 'react'
-import { G } from 'react-router/dist/development/fog-of-war-CCAcUMgB';
 import './slider.css';
 // import CarasoulProps from './carasoulType';
 import type { CarasoulProps, cssClassesType, slickStylesType } from './carasoulType';
-import { checkUnevenSets } from './utils';
+import { checkUnevenSets, getVacantElements } from './utils';
 
 
-function getVacantElements(totalItems: number, viewportSize: number, scrollStep: number): number {
-    let vacant = 0;
-    let i = 0;
-
-    // Find the last valid start index
-    while (i + viewportSize < totalItems) {
-        i += scrollStep;
-    }
-
-    // Remaining elements in the last group
-    let lastGroupSize = totalItems - i;
-
-    if (lastGroupSize < viewportSize) {
-        vacant = viewportSize - lastGroupSize;
-    }
-
-    return vacant;
-}
 
 function getBasicData(){
-    const shift = 4
-    const arr = [1,2,3,4,5,6]
-    let convertedLength = 0;
-    let infiniteArray = [];
-    let unevenSkipPosition = 0;
-    const arrLen = arr.length
 
-    const beforeArray = arr.slice(arrLen-shift,arrLen)
-    const newAppendedPosition = beforeArray.length + arrLen
-    const onePositionIndex = 1 / shift;
-    unevenSkipPosition = newAppendedPosition * onePositionIndex
-    infiniteArray = [...beforeArray,...arr,...arr]
-    convertedLength = arrLen * 2 + shift;
 }
 
 const AnilCarasoul:React.FC<CarasoulProps> = ({
@@ -69,7 +37,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const [containerWidth,setContainerWidth] = useState<number>(0);
     const [scrollWidth,setScrollWidth]  = useState<number>(0);
 
-    const [[mouseX,mouseY],setMousePosition] = useState<[number,number]>([0,0])
     const [[downX,downY],setCursorDownPoint] = useState<[number,number]>([0,0])
     const [[startX,startY],setDragStartPoint] = useState<[number,number]>([0,0])
 
@@ -78,7 +45,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const [transformWidth,setTransformWidth] = useState<number>(0);
     const [transformingWidth,setTransformingWidth] = useState<number>(0);
     const [activeIndex,setActiveIndex] = useState<number>(0);
-    const [dotIndex,setDotIndex] = useState<number>(1);
 
     const [prevBtnStatus,setPrevBtnStatus] = useState<boolean>(false);
     const [nextBtnStatus,setNextBtnStatus] = useState<boolean>(false);
@@ -91,20 +57,28 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
     // console.log('data array',dataArray)
     const componentLength:number = dataArray.length
-    const changedArray = [...childrenArray.slice(-itemToScroll),...childrenArray,...childrenArray.slice(0,childrenArray.length)]
-    const convertedArray = infinite ? changedArray : childrenArray;
     // console.log('converetd array',convertedArray)
-    const convertedLength:number = convertedArray.length
+    // const convertedLength:number = convertedArray.length
     
     const dotLength = infinite? Math.ceil(componentLength / itemToScroll)  : Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
     const dotArray = Array.from({length:dotLength})
     const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
     const unevenStatus = !checkUnevenSets(componentLength,itemsToShow,itemToScroll)
 
+    let unevenSkipPosition = 0;
+    const beforeArray = childrenArray.slice(componentLength-itemToScroll,componentLength)
+    const newAppendedPosition = beforeArray.length + componentLength
+    const onePositionIndex = 1 / itemToScroll;
+    unevenSkipPosition = newAppendedPosition * onePositionIndex
+    const changedArray = [...beforeArray,...childrenArray,...childrenArray]
+    const convertedLength:number = componentLength * 2 + itemToScroll;
+    const convertedArray = infinite ? changedArray : childrenArray;
+    const lastPosition = (newAppendedPosition - itemsToShow) * onePositionIndex
+
+    // console.log('uneven back postion index',lastPosition,newAppendedPosition)
+
 
     const getContainerData  =()=>{
-        console.log('Uneven Set or not',unevenStatus)
-        console.log('vacant space',vacantSpace)
         if(sliderContainerRef.current){
             // slider container 
             const rect = sliderContainerRef.current.getBoundingClientRect();
@@ -301,7 +275,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         if (adjustedIndex < 0){
             adjustedIndex += componentLength
         }
-        setDotIndex(adjustedIndex)
+        // setDotIndex(adjustedIndex)
     }
 
     const handleActiveIndex =(index:number)=>{
@@ -336,29 +310,25 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }else{
             if(!unevenStatus){
                 if(newActiveIndex == dotLength){
-                    const remainingSpace = vacantSpace / itemToScroll
-                // const newIndexSpace = vacantSpace - remainingSpace
-                    newActiveIndex = dotLength - remainingSpace
-                    console.log('last elem before devastation',vacantSpace, remainingSpace)
+                    newActiveIndex = lastPosition
+                }else if(newActiveIndex > dotLength){
+                    newActiveIndex = unevenSkipPosition
                 }
             }
 
         transformFunction(newActiveIndex);
 
         setTimeout(()=>{
-            // setActiveTransform(false);
-            // reversing the scroll option
-            if(index < (infinite ? 1 : 0)){
+            if(index < 1){
                 setActiveTransform(false);
-                if(itemToScroll == itemsToShow && vacantSpace){
+                if(!unevenStatus){
                     const remainingSpace = vacantSpace / itemToScroll
                 // const newIndexSpace = vacantSpace - remainingSpace
-                    newActiveIndex = dotLength  - remainingSpace
+                    newActiveIndex = lastPosition
                 }else{
                     newActiveIndex = dotLength
 
                 } 
-                newActiveIndex = dotLength
                 transformFunction(newActiveIndex)
             }else if(index > dotLength){
                 setActiveTransform(false);
@@ -369,6 +339,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             
         },scrollDuration)
         }
+        console.log('active index',activeIndex)
 
     }
 
