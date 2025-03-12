@@ -3,7 +3,6 @@ import AnilCarasoul from '../components/carasoul/AnilCarasoul';
 // import CarasoulProps from '../components/carasoul/carasoulType';
 import { CarasoulProps } from '../components/carasoul/carasoulType';
 import ProjectCard from '../cards/ProjectCard';
-import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 const CarasoulPage = () => {
@@ -205,28 +204,6 @@ const CarasoulPage = () => {
                 </AnilCarasoul>
 
             </div>
-
-
-        {/* <Slider {...settings2}>
-        <div className='border-2'>
-        <h3>1</h3>
-      </div>
-      <div>
-        <h3>2</h3>
-      </div>
-      <div>
-        <h3>3</h3>
-      </div>
-      <div>
-        <h3>4</h3>
-      </div>
-      <div>
-        <h3>5</h3>
-      </div>
-      <div>
-        <h3>6</h3>
-      </div>
-        </Slider> */}
                  
         </div>
     );
