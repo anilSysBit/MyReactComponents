@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './slider.css';
 // import CarasoulProps from './carasoulType';
 import type { CarasoulProps, cssClassesType, slickStylesType } from './carasoulType';
-import { checkUnevenSets, getVacantElements } from './utils';
+import { checkUnevenSets, getVacantElements , calculateStepLength } from './utils';
 
 
 
@@ -56,10 +56,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     // console.log('converetd array',convertedArray)
     // const convertedLength:number = convertedArray.length
     
-    const dotLength = infinite? Math.ceil(componentLength / itemToScroll)  : Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
-    const dotArray = Array.from({length:dotLength})
-    const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
-    const unevenStatus = !checkUnevenSets(componentLength,itemsToShow,itemToScroll)
+
 
     let unevenSkipPosition = 0;
     const beforeArray = childrenArray.slice(componentLength-itemToScroll,componentLength)
@@ -72,10 +69,14 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     const lastPosition = (newAppendedPosition - itemsToShow) * onePositionIndex
 
     // console.log('uneven back postion index',lastPosition,newAppendedPosition)
-
+    const unevenStatus = checkUnevenSets(componentLength,itemsToShow,itemToScroll)
+    const dotLength = infinite? (unevenStatus ? Math.ceil(componentLength / itemToScroll) : calculateStepLength(componentLength,itemsToShow,itemToScroll))  : Math.ceil((componentLength - itemsToShow) / itemToScroll)   + 1;
+    const dotArray = Array.from({length:dotLength})
+    const vacantSpace = getVacantElements(componentLength,itemsToShow,itemToScroll)
 
     const getContainerData  =()=>{
     console.log('Uneven data',unevenStatus,unevenSkipPosition,lastPosition)
+    console.log('vacant space',vacantSpace)
         if(sliderContainerRef.current){
             // slider container 
             const rect = sliderContainerRef.current.getBoundingClientRect();
@@ -218,7 +219,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         // console.log('index position',indexPosition)
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
         // let absolutePosition = 
-        // console.log('absolute pos',absolutePosition)
+        console.log('absolute pos',absolutePosition)
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -292,7 +293,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 }else{
                 newActiveIndex = dotLength - 1
                 }
-            
+                
             }
             
             else if(newActiveIndex < 0){
@@ -304,7 +305,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         }else{
             if(!unevenStatus){
                 if(newActiveIndex == dotLength){
-                    newActiveIndex = lastPosition
+                    // if(vacantSpace){
+                        newActiveIndex = lastPosition
+                    // }
                 }else if(newActiveIndex > dotLength){
                     newActiveIndex = unevenSkipPosition
                 }

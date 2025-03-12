@@ -18,7 +18,7 @@ const shiftArray = (arr: number[], shiftValue: number): number[] => {
 };
 
 // Function to check if the shift will wrap the array properly
-export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewportSize: number): boolean => {
+export const checkUnevenSets = (arrayLength: number, viewportSize: number, shiftValue: number): boolean => {
   const arr = createArray(arrayLength);
   let currentArray = [...arr];
   const originalArray = [...arr];
@@ -37,7 +37,7 @@ export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewpor
   // Check if the shift divides the array length properly
   if (totalLength % shiftValue !== 0) {
     // return "Uneven: shift does not divide evenly into the array."; // If shift doesn't divide evenly into the array
-    return true
+    return false
   }
 
   // Loop to simulate shifting and see if we return to the original array
@@ -52,7 +52,7 @@ export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewpor
     // If after any shift the array is back to the original, we stop
     if (JSON.stringify(currentArray) === JSON.stringify(originalArray)) {
     //   return "Shift is perfect and array returns to original.";
-        return false
+        return true
         
     }
 
@@ -64,7 +64,7 @@ export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewpor
   } while (true);
 
 //   return "Uneven: shift does not return to original.";
-  return true
+  return false;
 };
 
 
@@ -85,4 +85,28 @@ export function getVacantElements(totalItems: number, viewportSize: number, scro
   }
 
   return vacant;
+}
+
+
+export function calculateStepLength(arrayLength:number, viewport:number, shift:number) {
+  let covered = new Set(); // Track covered elements
+  let steps = 0;
+  let start = 0;
+
+  while (start < arrayLength) {
+      steps++;
+
+      // Cover elements from start index up to viewport size
+      for (let i = start; i < Math.min(start + viewport, arrayLength); i++) {
+          covered.add(i);
+      }
+
+      // If all elements are covered, stop
+      if (covered.size >= arrayLength) break;
+
+      // Move by shift
+      start += shift;
+  }
+
+  return steps;
 }
