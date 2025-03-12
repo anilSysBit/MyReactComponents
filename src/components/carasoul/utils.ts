@@ -47,7 +47,7 @@ export const checkUnevenSets = (arrayLength: number, shiftValue: number, viewpor
     iterations++;
 
     const chunkedArray = chunks(currentArray, viewportSize);
-    console.log("Iteration:", iterations, "Chunked Array:", chunkedArray);
+    // console.log("Iteration:", iterations, "Chunked Array:", chunkedArray);
 
     // If after any shift the array is back to the original, we stop
     if (JSON.stringify(currentArray) === JSON.stringify(originalArray)) {

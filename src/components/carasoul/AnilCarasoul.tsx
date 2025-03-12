@@ -7,10 +7,6 @@ import { checkUnevenSets, getVacantElements } from './utils';
 
 
 
-function getBasicData(){
-
-}
-
 const AnilCarasoul:React.FC<CarasoulProps> = ({
     children,
     itemsToShow=1,
@@ -79,6 +75,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
 
 
     const getContainerData  =()=>{
+    console.log('Uneven data',unevenStatus,unevenSkipPosition,lastPosition)
         if(sliderContainerRef.current){
             // slider container 
             const rect = sliderContainerRef.current.getBoundingClientRect();
@@ -202,7 +199,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         if (activeIndex > indexPosition) {
             return d > 1 / (itemsToShow * 5) ? Math.floor(indexPosition) : activeIndex;
         } else {
-
             if(infinite && !unevenStatus){
                 return d > 1 / (itemsToShow * 5) ? activeIndex + 1 : activeIndex;
             }else{
@@ -223,8 +219,6 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
         let absolutePosition = getNewIndex(activeIndex,indexPosition)
         // let absolutePosition = 
         // console.log('absolute pos',absolutePosition)
-
-        
 
         // setActiveIndex(absolutePosition)
         handleActiveIndex(absolutePosition)
@@ -305,7 +299,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 newActiveIndex = 0
     
             }
-
+            transformFunction(newActiveIndex)
             
         }else{
             if(!unevenStatus){
