@@ -13,16 +13,12 @@ const CarasoulPage = () => {
         dots: true,
         infinite:true,
         autoPlay:false,
-        scrollDuration:800,
+        autoPlayMotion:true,
+        scrollDuration:2000,
+        autoPlaySpeed:2000,
+        // transitionType:"linear"
 
     });
-    var settings2 = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 4,
-      };
     const [infi,setInfi] = useState(false);
     const projects = [
         {

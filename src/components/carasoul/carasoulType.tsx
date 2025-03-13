@@ -55,6 +55,9 @@ export interface CarasoulProps{
     gapBetweenBox?:number;
     cssClasses?:cssClassesType;
     removeArrowOnDisabled?:boolean;
+    autoPlayMotion?:boolean;
+    transitionType?:string;
+    autoPlaySpeed?:number;
     
 }
 

@@ -22,6 +22,9 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     style,
     cssClasses,
     removeArrowOnDisabled=false,
+    autoPlayMotion=false,
+    transitionType='ease',
+    autoPlaySpeed=2000,
 
     }) => {
     const sliderContainerRef = useRef<HTMLDivElement | null>(null);
@@ -408,18 +411,23 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
     }
 
     useEffect(()=>{
-        let intervalId:any;
-        if(autoPlay && speed > 0){
-        let i = 1;
-        intervalId = setInterval(()=>{
-            if (i > componentLength) {
-                i = 1; // Reset to 1 when i > componentLength
-              } else {
-                i = i + 1; // Otherwise increment
-              }
-            handleActiveIndex(i)
-        },speed)
+        let intervalId: any;
+
+        if (autoPlay && speed > 0) {
+            let i = 1;
+            intervalId = setInterval(() => {
+                // console.log('New index on autoplay',activeIndex)
+                i = i + 1
+                if(i > dotLength){
+                     i = dotLength + 1;
+                }
+                handleActiveIndex(i)
+            }, speed);
         }
+    
+        // return () => clearInterval(intervalId); // Cleanup function to clear the interval when autoPlay is false or component unmounts
+
+
     },[autoPlay])
     
     
@@ -431,7 +439,7 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
             cursor:cursorType,
             width:`${containerWidth * convertedLength}px`,
             transform:`translate3d(${-transformingWidth}px,0px,0px)`,
-            transition:activeTransform ? `-webkit-transform ${scrollDuration}ms`:'',
+            transition:activeTransform ? `-webkit-transform ${scrollDuration}ms ${transitionType}`:'',
         },
         slideBox:{
             width:`${containerWidth/itemsToShow}px`,
@@ -456,9 +464,10 @@ const AnilCarasoul:React.FC<CarasoulProps> = ({
                 onMouseUp: handleMouseUp,
                 onMouseOut: handleMouseOut,
                 // onMouseLeave:handleMouseOut,
-                onTouchStart: handleMouseDown,
-                onTouchEnd: handleMouseUp,
                 onTouchMove: handleMouseMove,
+                onTouchStart: handleMouseDown,
+                onTouchCancel: handleMouseUp,
+                onTouchEnd: handleMouseUp,
               })}
             >
             <div 
