@@ -14,8 +14,8 @@ const CarasoulPage = () => {
         infinite:true,
         autoPlay:false,
         autoPlayMotion:true,
-        scrollDuration:2000,
-        autoPlaySpeed:2000,
+        scrollDuration:500,
+        autoPlaySpeed:500,
         // transitionType:"linear"
 
     });

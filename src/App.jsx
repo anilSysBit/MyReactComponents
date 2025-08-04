@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import ThemeToggle from './components/sidebar/ThemeToggle'
 import { ImageFileHandler } from './components/forms/fileHandler/ImageFileHandler'
 import FileUploadPage from './pages/file/FileUploadPage'
+import TicketPrinter from './components/ticket_printer/TicketPrinter'
 
 
 function App() {
@@ -69,7 +70,7 @@ const toggleDarkMode = () => {
     <>
    <BrowserRouter>
    <div className='flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200'>
-   <header className='sticky top-0 w-full z-50 transition-all duration-300 bg-white dark:bg-gray-700 shadow-md py-0'>
+   <header className='nav_bar sticky top-0 w-full z-50 transition-all duration-300 bg-white dark:bg-gray-700 shadow-md py-0'>
    <div className='flex p-3 place-content-center justify-between'>
         <h1 className='text-2xl font-bold text-slate-700 dark:text-slate-200'>
           <Link to={"/"}>Anil Components</Link>
@@ -88,6 +89,7 @@ const toggleDarkMode = () => {
     <Route path='/magnifier' element={<Magnifier/>}/>
     <Route path='/sidebar' element={<SidebarPage/>} />
     <Route path='/filehandler' element={<FileUploadPage/>} />
+    <Route path='/ticket-printer' element={<TicketPrinter/>} />
    </Routes>
    </main>
     </div>

@@ -12,7 +12,8 @@ const LandingPage:React.FC = () => {
         { path: '/slider', title: 'Custom Slick Carousel' },
         { path: '/magnifier', title: 'New Magnifier' },
         { path: '/sidebar', title: 'Admin Sidebar' },
-        { path: '/filehandler', title: 'File Handler' }
+        { path: '/filehandler', title: 'File Handler' },
+        { path: '/ticket-printer', title: 'Beats Ticket Printer' },
       ];
   return (
     
